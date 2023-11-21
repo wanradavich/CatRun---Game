@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="manifest" href="/site.webmanifest">
+    <title>Home 🐈</title>
+</head><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="./styles/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <title>Cat Run - Instructions 🐈</title>
+</head>
+<body>
+    <div id="date-container">
+        <p>
+            <span id="name-date">CatRun</span>
+            <span id="date-date">2023 Nov10</span>
+            <span id="time-date">13:33:47</span>
+        </p>
+    </div>
+    <!--header-->
+    <header id="header">
+        <div class="header-txt">
+            <p>Welcome to</p>
+            <h1 class="catrun-txt">Cat Run!</h1>
+            <div class="header-buttons">
+                <button id="quitBtn" class="btn btn-danger b-hide">Quit</button>
+                <button id="helpBtn" class="btn btn-success b-hide" >Help</button>
+                <button id="homeBtn" class="btn btn-warning b-hide">Home</button>
+                <button id="infoBtn" class="btn btn-info b-hide" data-toggle="modal" data-target="#infoModal">Info</button>
+            </div>          
+        </div>
+    </header>
+    <!--main-->
+    <main id="main">
+        <!--instruction-->
+        <section id="instruction-screen" class="screen">
+            <div class="introduction">
+                <p class="intro-desc"><span class="introdot-color">...</span>Once upon a time, in a colorful Cat World, there lived a friendly cat
+                    who loved to run. It loved to explore and eat delicious fish. One day, 
+                    the world rained fish and filled the grounds with the tastiest fish ever!
+                    But to enjoy good and tasty fish, it needs your help.
+                </p>
+            </div>            
+            <div class="flex-container">
+                <div class="good-fish">
+                    <img src="./images/good-fish.png" alt="good-fish image">
+                    <p class="fish-title">Eat Good Fish:</p>
+                    <p class="desc">Cat is very hungry! Help it move around the 
+                        Cat World using the arrow keys on your keyboard. Guide him to eat only good 
+                        and magical fish that appear to score a point. Every fish it eats makes it 
+                        grow longer and stronger!
+                    </p>
+                </div>
+                <div class="magical-fish">
+                    <img src="./images/magical-fish.png" alt="magical-fish image">
+                    <p class="fish-title">Eat Magical Fish:</p>
+                    <p class="desc">Cat is keeping score of how much it eats.
+                        It's ultimate dream is to brag to the cats back home!
+                        Help the cat score more points by eating Magical Fish. You never know how 
+                        many points Magical Fish might bring you. 
+                    </p>
+                </div>
+                <div class="bad-fish">
+                    <img src="./images/bad-fish.png" alt="bad fish image">
+                    <p class="fish-title-bad">Avoid Bad Fish:</p>
+                    <p class="desc">Beware of tricky bad fish traps! At first
+                        glimpse, they look just like a good fish. Aside from that, Don't let Cat 
+                        run into the walls or himself. If he does, the game 
+                        will be over.
+                    </p>
+                </div>          
+            </div>
+            
+        </section>   
+        <!--start-->
+        <section id="start-screen" class="screen">
+            <h3>...choose your runner...</h3>   
+            <div class="cat-choice">
+                <div class="profile-box">
+                    <img id="calico" class="cat-profile" src="./images/calico-profile.png" alt="calico cat">
+                </div>
+                <div class="profile-box">
+                    <img id="brown" class="cat-profile" src="./images/brown-profile.png" alt="brown cat">
+                </div>
+                <div class="profile-box">
+                    <img id="cream" class="cat-profile" src="./images/cream-profile.png" alt="cream-cat">
+                </div>
+            </div>
+            <input id="inputName" type="text" placeholder="[enter cat name]">
+            <button id="runBtn">Start</button>
+        </section>
+        <!--game-->
+        <section id="game-screen" class="screen">
+            <div id="canvas-container">
+                <div id="score-container">
+                    <div id="button-container">
+                        <button id="playBtn" class="play">Play</button>
+                    </div>
+                    <img id="cat-img" src="" alt="cat-animation">
+                    <canvas id="cat-canvas"></canvas>
+                    <div id="info-container">
+                        <p>Name...<span id="cat-name"></span></p>
+                        <p>Score...<span id="score">10</span></p>
+                        <p>Clock...<span id="timer">00:00</span></p>
+                    </div>
+                </div> 
+                <canvas id="game-board" width="600px" height="600px"></canvas>  
+            </div>       
+        </section>
+        <!--gameover-->
+        <section id="gameover-screen" class="screen">
+            <div class="gameover-txt">
+                <h2 class='lineUp'>game over</h2>
+                <p>score ..... <span id="go-score">10</span></p>
+                <p>time ... <span id="time-score">00:00</span></p>
+                <button id="tryAgainBtn" class="btn btn-danger">Try Again</button>                              
+            </div>
+        </section>
+        <!--Modal-->
+        <div class="modal" id="infoModal" tabindex="-1">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Game Info</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <li><img src="./images/good-fish.png" />  Good Fish: +1</li>
+                        <li><img src="./images/magical-fish.png" />  Magical Fish: +Random</li>
+                        <li><img src="./images/bad-fish.png" />  Bad Fish: -Random</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+    </main>
+    <footer id="footer">
+        <p class="footer-content">© <span>Cat Run</span> 2023</p>
+    </footer>
+    
+    <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="./scripts/script.js"></script>
+</body>
+</html>
+<body>
+    
+    <script src="./scripts/script.js"></script>
+</body>
+</html

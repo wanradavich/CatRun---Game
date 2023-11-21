@@ -1,0 +1,323 @@
+body{
+    box-sizing: border-box;
+    background-color: black;
+    color: antiquewhite;
+    font-family: "Press Start 2P";
+    font-size: 14px;
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+}
+
+.hide{
+    display: none;
+}
+
+.b-hide{
+    display: none;
+}
+
+/* modals */
+#infoModal{
+    color: black;
+    width: 500px;
+    height: 500px;
+    position: absolute;
+    left: 50%;
+    top: 50%; 
+    margin-left: -250px;
+    margin-top: -180px;
+}
+
+.modal-title{
+    color: black;
+}
+.modal-body{
+    color: purple;
+    line-height: 20px;
+    background-color: rgb(201, 201, 201);
+}
+
+.modal-body>ul{
+    list-style-type: none;
+}
+
+.modal-header, .modal-footer{
+    background-color: white;
+}
+
+.modal-footer>button{
+    background-color: red;
+}
+
+a{
+    text-decoration: none;
+}
+
+#footer {
+    width: 100%;
+}
+
+.footer-content{
+    font-size: smaller;
+    color: white;
+    text-align: center;
+    padding: 1em;
+}
+
+
+.footer-content>span{
+    background-color: blue;
+    color: yellow
+}
+
+#date-container{
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+}
+
+#name-date{
+    color: yellow;
+    background-color: blue;
+    padding: 3px 40px;
+    margin-right: 15px;
+}
+
+#time-date{
+    color: yellow;
+}
+
+#header{
+    background-color: blue;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 3em;
+}
+
+.header-txt{
+    line-height: 1em;
+    font-size: 1.5em;
+    color: yellow;
+    width: 50em;
+    margin-top: 2em;
+}
+
+.header-txt>h1{
+    font-size: 3em;
+}
+
+.header-buttons{
+    width: 95%;
+    display: flex;
+    justify-content: right;
+}
+
+.header-buttons>.btn{
+    margin: 1em;
+    font-size: 11px;
+}
+
+#main{
+    width: 85%;
+    height: 45em;
+    line-height: 1em;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.screen{
+    width: 100%;
+}
+
+/* instruction screen */
+.introduction{
+    color: rgb(255, 194, 80);
+    margin-bottom: 1em ;
+}
+
+.catrun-txt{
+    color: rgb(249, 97, 239);
+}
+
+.good-fish, .magical-fish, .bad-fish{
+    margin: 2em;
+    text-align: center;
+    margin-bottom: 2em;
+    width: 25em;
+}
+
+.desc, .intro-desc{
+    line-height: 2em;
+}
+
+.flex-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.fish-title{
+    color: aquamarine;
+}
+
+.fish-title-bad{
+    color: red;
+}
+
+.fish-title, .fish-title-bad{
+    margin: 1.5em;
+    line-height: 2em;
+}
+
+section>img{
+margin-bottom: 2em;
+}
+
+
+/*start screen*/
+.cat-profile {
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+    cursor: pointer;
+}
+
+.cat-profile:hover,
+.cat-profile.clicked {
+    opacity: 1;
+}
+
+#runBtn {
+    background-color: greenyellow;
+    width: 150px;
+    color: rgb(29, 4, 29);
+    font-family: "Press Start 2P";
+    border-radius: 1em;
+    border: none;
+    padding: .5em;
+    animation:1s anim-lineUp ease-out infinite;
+  }
+
+.cat-choice{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 1em;
+    width: 100%;
+}
+.cat-profile{
+    width: 6em;
+    height: 6em;
+}
+
+.profile-box{
+    border-radius: 50%;
+    padding: 2em;
+}
+
+.profile-box>p{
+    margin: 16px;
+    color: paleturquoise;
+    text-align: center;
+}
+
+#start-screen>h3{
+    margin: 100px;
+}
+
+#inputName{
+    margin-top: 100px;
+}
+
+/*game screen*/
+#info-container{
+    margin-top: 40px;
+    text-align: left;
+}
+
+#info-container>span{
+    text-align: right;
+}
+
+#game-board{
+    border: solid 2px yellow;
+}
+
+#cat-img{
+    display: none;
+}
+
+#cat-canvas{
+    background-color: white;
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+}
+
+.c-play{
+    background-color: white;
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    border: 4px solid rgb(49, 49, 213);
+}
+
+.c-pause{
+    background-color: white;
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    border: 4px solid rgb(249, 97, 239);
+}
+
+#canvas-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#score-container{  
+    margin-right: 60px;  
+}
+
+#score-container>p{
+    margin-top: 50px;
+}
+
+#playBtn{
+    margin-bottom: 40px;
+    border-radius: 5px;
+    padding: 8px;
+}
+
+.pause{
+    background-color: rgb(255, 194, 80);
+}
+
+.play{
+    background-color: rgba(192, 245, 59, 0.891);
+}
+
+/*game over screen*/
+
+.gameover-txt>h2{
+    color: yellow;
+    font-size: 5em;
+    margin: 100px;
+}
+
+.gameover-txt>p{
+    color: greenyellow;
+}
+
+#go-score, #time-score{
+    color: rgb(229, 102, 229)
+}
+
+#tryAgainBtn{
+    margin: 50px;
+}
