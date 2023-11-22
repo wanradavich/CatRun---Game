@@ -442,6 +442,7 @@ function resetGame() {
     headX = 10;
     headY = 10;
     tailLength = 0;
+
     // Reset fish positions
     fishGoodX = 5;
     fishGoodY = 5;
@@ -449,25 +450,22 @@ function resetGame() {
     fishMagicalY = 6;
     fishBadX = 7;
     fishBadY = 7;
+
     // Reset velocities
     xVelocity = 0;
     yVelocity = 0;
 
-    
     // Clear intervals and timeouts
     clearInterval(badInterval);
     clearInterval(magicalInterval);
     clearTimeout(gameInterval);
-
-    // Reset UI elements
-    displayScore(); 
-    // updateCatImage(); 
-
-    // Hide game screens and show start screen
-    document.getElementById('gameover-screen').classList.add('hide');
-    document.getElementById('start-screen').classList.remove('hide');
+    
     $('#gameover-screen').addClass('hide');
-    document.getElementById('instruction-screen').classList.add('hide');
+    $('#start-screen').addClass('hide');
+    $('#instruction-screen').addClass('hide');
+    $('#game-screen').removeClass('hide');
+
+    drawGame();
 }
 
 
@@ -505,7 +503,6 @@ function keyDirection(event){
     //spacebar play/pause
     if (event.keyCode == 32 && !isSpaceBar){
         isSpaceBar = true;
-        // gameControls.toggleRunning();
         if (gameControls.isRunning){
             pressPlay();
         } else {

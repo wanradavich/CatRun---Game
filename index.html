@@ -36,9 +36,9 @@
             <h1 class="catrun-txt">Cat Run!</h1>
             <div class="header-buttons">
                 <button id="quitBtn" class="btn btn-danger b-hide">Quit</button>
-                <button id="helpBtn" class="btn btn-success b-hide" >Help</button>
+                <button id="helpBtn" class="btn btn-info b-hide" >Help</button>
                 <button id="homeBtn" class="btn btn-warning b-hide">Home</button>
-                <button id="infoBtn" class="btn btn-info b-hide" data-toggle="modal" data-target="#infoModal">Info</button>
+                <button id="infoBtn" class="btn btn-warning b-hide" data-toggle="modal" data-target="#infoModal">Info</button>
             </div>          
         </div>
     </header>
@@ -47,7 +47,7 @@
         <!--instruction-->
         <section id="instruction-screen" class="screen">
             <div class="introduction">
-                <p class="intro-desc"><span class="introdot-color">...</span>Once upon a time, in a colorful Cat World, there lived a friendly cat
+                <p class="intro-desc">Once upon a time, in a colorful Cat World, there lived a friendly cat
                     who loved to run. It loved to explore and eat delicious fish. One day, 
                     the world rained fish and filled the grounds with the tastiest fish ever!
                     But to enjoy good and tasty fish, it needs your help.
@@ -86,7 +86,8 @@
         </section>   
         <!--start-->
         <section id="start-screen" class="screen">
-            <h3>...choose your runner...</h3>   
+            <p id="select-txt">choose your runner</p>  
+            <p id="catname-display">Oliver</p>
             <div class="cat-choice">
                 <div class="profile-box">
                     <img id="calico" class="cat-profile" src="./images/calico-profile.png" alt="calico cat">
@@ -103,20 +104,18 @@
         </section>
         <!--game-->
         <section id="game-screen" class="screen">
+            <div id="profile-container">
+                <img id="cat-img" src="" alt="cat-animation"> 
+                <canvas id="cat-canvas"></canvas>
+                <div id="info-container">
+                    <p id="cat-name"></p>
+                    <p>Score......<span id="score">10</span></p>
+                    <p>Clock...<span id="timer">00:00</span></p>
+                </div>
+            </div>
             <div id="canvas-container">
-                <div id="score-container">
-                    <div id="button-container">
-                        <button id="playBtn" class="play">Play</button>
-                    </div>
-                    <img id="cat-img" src="" alt="cat-animation">
-                    <canvas id="cat-canvas"></canvas>
-                    <div id="info-container">
-                        <p>Name...<span id="cat-name"></span></p>
-                        <p>Score...<span id="score">10</span></p>
-                        <p>Clock...<span id="timer">00:00</span></p>
-                    </div>
-                </div> 
-                <canvas id="game-board" width="600px" height="600px"></canvas>  
+                <canvas id="game-board" width="500px" height="500px"></canvas>  
+                <button id="playBtn" class="play">Play</button>     
             </div>       
         </section>
         <!--gameover-->
@@ -137,11 +136,9 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <ul>
-                        <li><img src="./images/good-fish.png" />  Good Fish: +1</li>
-                        <li><img src="./images/magical-fish.png" />  Magical Fish: +Random</li>
-                        <li><img src="./images/bad-fish.png" />  Bad Fish: -Random</li>
-                    </ul>
+                    <p><img class="modal-img" src="./images/good-fish.png" />  Good Fish: <p class="sub-info">+1</p></p>
+                    <p><img class="modal-img" src="./images/magical-fish.png" />  Magical Fish: <p class="sub-info">+Random</p></p>
+                    <p><img class="modal-img" src="./images/bad-fish.png" />  Bad Fish: <p class="sub-info-bad">-Random</p></p>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -151,7 +148,7 @@
           </div>
     </main>
     <footer id="footer">
-        <p class="footer-content">© <span>Cat Run</span> 2023</p>
+        <p class="footer-content">© 2023 Cat Run</p>
     </footer>
     
     <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
