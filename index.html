@@ -23,7 +23,7 @@
 </head>
 <body>
     <div id="date-container">
-        <p>
+        <p id="date-span">
             <span id="name-date">CatRun</span>
             <span id="date-date">2023 Nov10</span>
             <span id="time-date">13:33:47</span>
@@ -35,10 +35,11 @@
             <p>Welcome to</p>
             <h1 class="catrun-txt">Cat Run!</h1>
             <div class="header-buttons">
-                <button id="quitBtn" class="btn btn-danger b-hide">Quit</button>
-                <button id="helpBtn" class="btn btn-info b-hide" >Help</button>
-                <button id="homeBtn" class="btn btn-warning b-hide">Home</button>
-                <button id="infoBtn" class="btn btn-warning b-hide" data-toggle="modal" data-target="#infoModal">Info</button>
+                <button id="playBtn" class="btn btn-success">Play</button>                
+                <button id="helpBtn" class="btn btn-info" >Help</button>
+                <button id="homeBtn" class="btn btn-warning">Home</button>
+                <button id="infoBtn" class="btn btn-warning" data-toggle="modal" data-target="#infoModal">Info</button>
+                <button id="quitBtn" class="btn btn-danger">Quit</button>
             </div>          
         </div>
     </header>
@@ -55,7 +56,7 @@
             </div>            
             <div class="flex-container">
                 <div class="good-fish">
-                    <img src="./images/good-fish.png" alt="good-fish image">
+                    <img class="icon" src="./images/good-fish.png" alt="good-fish image">
                     <p class="fish-title">Eat Good Fish:</p>
                     <p class="desc">Cat is very hungry! Help it move around the 
                         Cat World using the arrow keys on your keyboard. Guide him to eat only good 
@@ -64,7 +65,7 @@
                     </p>
                 </div>
                 <div class="magical-fish">
-                    <img src="./images/magical-fish.png" alt="magical-fish image">
+                    <img class="icon" src="./images/magical-fish.png" alt="magical-fish image">
                     <p class="fish-title">Eat Magical Fish:</p>
                     <p class="desc">Cat is keeping score of how much it eats.
                         It's ultimate dream is to brag to the cats back home!
@@ -73,7 +74,7 @@
                     </p>
                 </div>
                 <div class="bad-fish">
-                    <img src="./images/bad-fish.png" alt="bad fish image">
+                    <img class="icon" src="./images/bad-fish.png" alt="bad fish image">
                     <p class="fish-title-bad">Avoid Bad Fish:</p>
                     <p class="desc">Beware of tricky bad fish traps! At first
                         glimpse, they look just like a good fish. Aside from that, Don't let Cat 
@@ -87,7 +88,7 @@
         <!--start-->
         <section id="start-screen" class="screen">
             <p id="select-txt">choose your runner</p>  
-            <p id="catname-display">Oliver</p>
+            <!-- <p id="catname-display">Oliver</p> -->
             <div class="cat-choice">
                 <div class="profile-box">
                     <img id="calico" class="cat-profile" src="./images/calico-profile.png" alt="calico cat">
@@ -104,24 +105,24 @@
         </section>
         <!--game-->
         <section id="game-screen" class="screen">
-            <div id="profile-container">
-                <img id="cat-img" src="" alt="cat-animation"> 
-                <canvas id="cat-canvas"></canvas>
-                <div id="info-container">
-                    <p id="cat-name"></p>
-                    <p>Score......<span id="score">10</span></p>
-                    <p>Clock...<span id="timer">00:00</span></p>
+            <div class="gamescreen-flex">
+                <div id="profile-container">
+                        <img id="cat-img" src="" alt="cat-animation"> 
+                        <canvas id="cat-canvas"></canvas>
+                    <div id="info-container">
+                        <p id="cat-name"></p>
+                        <br>
+                        <p>Score......<span id="score">10</span></p>
+                        <p>Clock...<span id="timer">00:00</span></p>
+                    </div>
                 </div>
-            </div>
-            <div id="canvas-container">
-                <canvas id="game-board" width="500px" height="500px"></canvas>  
-                <button id="playBtn" class="play">Play</button>     
-            </div>       
+                <canvas id="game-board" width="600px" height="600px"></canvas>    
+            </div>     
         </section>
         <!--gameover-->
         <section id="gameover-screen" class="screen">
-            <div class="gameover-txt">
-                <h2 class='lineUp'>game over</h2>
+            <h2 class='go-txt'>game over</h2>
+            <div class="goscore-container">
                 <p>score ..... <span id="go-score">10</span></p>
                 <p>time ... <span id="time-score">00:00</span></p>
                 <button id="tryAgainBtn" class="btn btn-danger">Try Again</button>                              

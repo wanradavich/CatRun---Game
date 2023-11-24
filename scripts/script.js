@@ -1,4 +1,41 @@
 "use strict";
+// window.onload = function() {
+//     // Sets a fixed window size
+//     let width = 768;
+//     let height = 616;
+//     window.resizeTo(width, height);
+//     window.focus();
+// }
+
+const currentDate= new Date();
+const timeDate = document.getElementById('time-date');
+const dateDate = document.getElementById('date-date');
+timeDate.innerHTML = `${currentDate.getHours()}:${currentDate.getMinutes()}:${currentDate.getSeconds()}`
+dateDate.innerHTML = `${currentDate.getFullYear()} ${currentDate.getMonth()} ${currentDate.getDate()}`;
+
+let timerInterval;
+let seconds = 0;
+let minutes = 0;
+
+function startTimer() {
+    timerInterval = setInterval(() => {
+        seconds++;
+        if (seconds === 60) {
+            minutes++;
+            seconds = 0;
+        }
+        updateTimerDisplay();
+    }, 1000);
+}
+
+function stopTimer() {
+    clearInterval(timerInterval);
+}
+
+function updateTimerDisplay() {
+    const timerDisplay = document.getElementById('timer');
+    timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+}
 
 const gameControls = {
     title: "Cat Run",
@@ -8,9 +45,7 @@ const gameControls = {
     currentModal: null,
     playBtn: document.getElementById('playBtn'),
     inputName: document.getElementById('inputName'),
-    toggleRunning: function(){
-        this.isRunning = !this.isRunning;
-    },
+
     showModal: function(){
         if (this.currentScreen === 'game-screen'){
             this.currentModal = new bootstrap.Modal($('#infoModal'));
@@ -27,6 +62,9 @@ const gameControls = {
             this.isRunning = this.wasRunning;
         }
     },
+    toggleRunning: function(){
+        this.isRunning = !this.isRunning;
+    },
     switchScreen: function(screenName){
         this.currentScreen=screenName;
         $('.screen').each(function() {
@@ -36,25 +74,28 @@ const gameControls = {
         $('#' + screenName).removeClass('hide');
 
         if (screenName === 'start-screen'){
-            $('#homeBtn').addClass('b-hide');           
-            $('#quitBtn').addClass('b-hide');
-            $('#infoBtn').addClass('b-hide');
-            $('#helpBtn').removeClass('b-hide');
+            $('#homeBtn').addClass('hide');           
+            $('#quitBtn').addClass('hide');
+            $('#infoBtn').addClass('hide');
+            $('#playBtn').addClass('hide');
+            $('#helpBtn').removeClass('hide');
         } else if (screenName === 'game-screen'){
-            $('#homeBtn').addClass('b-hide');
-            $('#quitBtn').removeClass('b-hide');
-            $('#helpBtn').addClass('b-hide'); 
-            $('#infoBtn').removeClass('b-hide');       
+            $('#homeBtn').addClass('hide');
+            $('#quitBtn').removeClass('hide');
+            $('#helpBtn').addClass('hide'); 
+            $('#infoBtn').removeClass('hide');
+            $('#playBtn').removeClass('hide');       
         } else if (screenName === 'gameover-screen'){
-            $('#helpBtn').removeClass('b-hide');
-            $('#quitBtn').addClass('b-hide');
-            $('#homeBtn').removeClass('b-hide');
-            $('#infoBtn').addClass('b-hide');
-        }
-        else if (screenName === 'instruction-screen'){
-            $('#homeBtn').removeClass('b-hide');
-            $('#helpBtn').addClass('b-hide');
-            $('#quitBtn').addClass('b-hide');
+            $('#helpBtn').removeClass('hide');
+            $('#quitBtn').addClass('hide');
+            $('#homeBtn').removeClass('hide');
+            $('#infoBtn').addClass('hide');
+            $('#playBtn').addClass('hide');
+        } else if (screenName === 'instruction-screen'){
+            $('#homeBtn').removeClass('hide');
+            $('#helpBtn').addClass('hide');
+            $('#quitBtn').addClass('hide');
+            $('#playBtn').addClass('hide');
         }
     },
     init: function(){
@@ -93,8 +134,16 @@ const gameControls = {
             this.switchScreen('game-screen');
         })
 
+        $('#runBtn').prop('disabled', true);
+
         $('#runBtn').on('click', () => {
-            this.switchScreen('game-screen');
+            const userInput = $('#inputName').val().trim();
+            if (userInput !== ''){
+                $('#inputName').val('');
+                $('#inputName').attr('placeholder', '[enter cat name]');
+                gameControls.switchScreen('game-screen');
+            }
+            
         })
 
         $('#calico').on('click', () => {
@@ -115,7 +164,13 @@ const gameControls = {
         $('#inputName').on('input', function() {
             const enteredName = $(this).val().trim();
             $('#cat-name').text(enteredName);
+            if(enteredName !== ''){
+                $('#runBtn').prop('disabled', false);
+            } else {
+                $('#runBtn').prop('disabled', true);
+            }
         });
+      
     }
 }
 
@@ -531,6 +586,7 @@ function pressPlay(){
     if (!magicalInterval) {
         magicalInterval = setInterval(placeMagicalFish, 2000);
     }
+    startTimer();
 }
 
 function pressPause(){
@@ -546,6 +602,7 @@ function pressPause(){
     magicalInterval = null;
     clearTimeout(gameInterval);
     gameInterval = null;
+    stopTimer();
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -568,6 +625,7 @@ const border = document.getElementById("cat-canvas");
 
 gameControls.init();
 gameControls.playBtn.addEventListener('click', function(){
+   
     gameControls.toggleRunning();  
     if(gameControls.isRunning){ 
         pressPlay();
