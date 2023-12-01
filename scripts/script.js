@@ -1,41 +1,25 @@
 "use strict";
-// window.onload = function() {
-//     // Sets a fixed window size
-//     let width = 768;
-//     let height = 616;
-//     window.resizeTo(width, height);
-//     window.focus();
-// }
+window.onload = function() {
+    const minWidth = 1024;
+    const minHeight = 768;
 
-const currentDate= new Date();
-const timeDate = document.getElementById('time-date');
-const dateDate = document.getElementById('date-date');
-timeDate.innerHTML = `${currentDate.getHours()}:${currentDate.getMinutes()}:${currentDate.getSeconds()}`
-dateDate.innerHTML = `${currentDate.getFullYear()} ${currentDate.getMonth()} ${currentDate.getDate()}`;
-
-let timerInterval;
-let seconds = 0;
-let minutes = 0;
-
-function startTimer() {
-    timerInterval = setInterval(() => {
-        seconds++;
-        if (seconds === 60) {
-            minutes++;
-            seconds = 0;
+    function setMinimumWindowSize() {
+        if (window.innerWidth < minWidth || window.innerHeight < minHeight) {
+            window.resizeTo(
+                Math.max(window.innerWidth, minWidth),
+                Math.max(window.innerHeight, minHeight)
+            );
         }
-        updateTimerDisplay();
-    }, 1000);
-}
+    }
 
-function stopTimer() {
-    clearInterval(timerInterval);
-}
+    // Initial check and setting minimum size
+    setMinimumWindowSize();
 
-function updateTimerDisplay() {
-    const timerDisplay = document.getElementById('timer');
-    timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-}
+    // Adding event listener to ensure the size is maintained if the window is resized
+    window.addEventListener('resize', setMinimumWindowSize);
+};
+
+
 
 const gameControls = {
     title: "Cat Run",
@@ -45,7 +29,11 @@ const gameControls = {
     currentModal: null,
     playBtn: document.getElementById('playBtn'),
     inputName: document.getElementById('inputName'),
+    soundIsPlaying: false,
 
+    toggleSound: function(){
+        this.soundIsPlaying = !this.soundIsPlaying;
+    },
     showModal: function(){
         if (this.currentScreen === 'game-screen'){
             this.currentModal = new bootstrap.Modal($('#infoModal'));
@@ -84,13 +72,20 @@ const gameControls = {
             $('#quitBtn').removeClass('hide');
             $('#helpBtn').addClass('hide'); 
             $('#infoBtn').removeClass('hide');
-            $('#playBtn').removeClass('hide');       
+            $('#playBtn').removeClass('hide');  
+            $('#soundBtn').removeClass('hide');  
+            pressPlay();
+            pressPause();
         } else if (screenName === 'gameover-screen'){
+            //clear timer
+            stopTimer();
             $('#helpBtn').removeClass('hide');
             $('#quitBtn').addClass('hide');
             $('#homeBtn').removeClass('hide');
             $('#infoBtn').addClass('hide');
             $('#playBtn').addClass('hide');
+            $('#soundBtn').addClass('hide'); 
+            
         } else if (screenName === 'instruction-screen'){
             $('#homeBtn').removeClass('hide');
             $('#helpBtn').addClass('hide');
@@ -99,51 +94,78 @@ const gameControls = {
         }
     },
     init: function(){
+        gameControls.isRunning = false;
         this.switchScreen(this.currentScreen);
-        $('#runBtn').on('click', () => {
-
-            this.switchScreen('game-screen');
-        });
+        $('#soundBtn').on('click', () => {
+            this.toggleSound();
+            if (this.soundIsPlaying){
+                playBackgroundSound();
+                $('#soundBtn').html(`
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-volume-mute" viewBox="0 0 16 16">
+                <path d="M6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06zM6 5.04 4.312 6.39A.5.5 0 0 1 4 6.5H2v3h2a.5.5 0 0 1 .312.11L6 10.96zm7.854.606a.5.5 0 0 1 0 .708L12.207 8l1.647 1.646a.5.5 0 0 1-.708.708L11.5 8.707l-1.646 1.647a.5.5 0 0 1-.708-.708L10.793 8 9.146 6.354a.5.5 0 1 1 .708-.708L11.5 7.293l1.646-1.647a.5.5 0 0 1 .708 0z"/>
+                </svg>`);
+            } else if (!this.soundIsPlaying){
+                pauseBackgroundSound()
+                $('#soundBtn').html(`<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-music-note-beamed" viewBox="0 0 16 16">
+                <path d="M6 13c0 1.105-1.12 2-2.5 2S1 14.105 1 13c0-1.104 1.12-2 2.5-2s2.5.896 2.5 2m9-2c0 1.105-1.12 2-2.5 2s-2.5-.895-2.5-2 1.12-2 2.5-2 2.5.895 2.5 2"/>
+                <path fill-rule="evenodd" d="M14 11V2h1v9zM6 3v10H5V3z"/>
+                <path d="M5 2.905a1 1 0 0 1 .9-.995l8-.8a1 1 0 0 1 1.1.995V3L5 4z"/>
+              </svg>`);
+            }
+        })
+        // $('#runBtn').on('click', () => {
+        //     this.switchScreen('game-screen');
+        // });
 
         $('#playPauseBtn').on('click', () => {
             this.toggleRunning();
             if(this.isRunning){
+                playBtnSound();
                 $('#playPauseBtn').html('Pause');
             } else {
+                playBtnSound();
                 $('#playPauseBtn').html('Play');
         }});
 
         $('#quitBtn').on('click', () => {
+            playBtnSound();
             resetGame();
             this.switchScreen('start-screen');
         });
 
         $('#helpBtn').on('click', () => {
+            playBtnSound();
             this.switchScreen('instruction-screen');
         })
 
         $('#infoBtn').on('click', () => {
+            playBtnSound();
             this.showModal()
         })
 
         $('#homeBtn').on('click', () => {
+            playBtnSound();
             this.switchScreen('start-screen');
         })
 
         $('#tryAgainBtn').on('click', () => {
+            playBtnSound();
+            
             this.switchScreen('game-screen');
+            resetGame();
         })
 
         $('#runBtn').prop('disabled', true);
 
         $('#runBtn').on('click', () => {
+            playStartSound();
             const userInput = $('#inputName').val().trim();
             if (userInput !== ''){
                 $('#inputName').val('');
                 $('#inputName').attr('placeholder', '[enter cat name]');
                 gameControls.switchScreen('game-screen');
             }
-            
+            pauseBackgroundSound();
         })
 
         $('#calico').on('click', () => {
@@ -171,6 +193,13 @@ const gameControls = {
             }
         });
       
+    }
+}
+
+class CatPart{
+    constructor(x, y){
+        this.x = x;
+        this.y = y;
     }
 }
 
@@ -207,14 +236,7 @@ class CatAnimation {
     };
 }
 
-class CatPart{
-    constructor(x, y){
-        this.x = x;
-        this.y = y;
-    }
-}
-
-//Cat in Cat Canvas
+//CAT in Cat Canvas
 class Cat {
     constructor(canvasWidth, canvasHeight, frameRate=5){
         this.canvasWidth = canvasWidth;
@@ -251,8 +273,6 @@ class Cat {
     }  
 }
 
-
-
 //home page 
 helpBtn.addEventListener(('click'), () => {
     instructionScreen.classList.remove('hide');
@@ -265,7 +285,7 @@ helpBtn.addEventListener(('click'), () => {
 const canvas = document.getElementById('game-board');
 const ctx = canvas.getContext('2d');
 
-let speed = 4;
+let speed = 6;
 
 let tileCount = 25;
 let tileSize = canvas.width/tileCount;
@@ -410,10 +430,11 @@ function drawGoodFish(){
 
 function checkGoodFishCollion() {
     if (fishGoodX === headX && fishGoodY === headY) {
-      handleFishCollision(FishType.GOOD);
-      fishGoodX = Math.floor(Math.random() * tileCount);
-      fishGoodY = Math.floor(Math.random() * tileCount);
-      tailLength++;
+        playEatSound();
+        handleFishCollision(FishType.GOOD);
+        fishGoodX = Math.floor(Math.random() * tileCount);
+        fishGoodY = Math.floor(Math.random() * tileCount);
+        tailLength++;
     }
   }
 
@@ -435,8 +456,9 @@ function placeMagicalFish(){
 
 function checkMagicalFishCollision() {
     if (fishMagicalX === headX && fishMagicalY === headY) {
-      handleFishCollision(FishType.MAGICAL);
-      placeMagicalFish();
+        playEatSound();
+        handleFishCollision(FishType.MAGICAL);
+        placeMagicalFish();
     }
   }
 
@@ -457,8 +479,9 @@ function placeBadFish(){
 
 function checkBadFishCollision() {
     if (fishBadX === headX && fishBadY === headY) {
-      handleFishCollision(FishType.BAD);
-      placeBadFish();
+        playBFSound()
+        handleFishCollision(FishType.BAD);
+        placeBadFish();
     }
   }
 
@@ -567,9 +590,138 @@ function keyDirection(event){
         isSpaceBar = false;
     }
 }
+
+//MISC FUNCTIONS : audio and date 
+//background audio
+const backgroundSound = new Audio('../audio/game-bg.mp3');
+function playBackgroundSound() {
+    backgroundSound.loop = true;
+    backgroundSound.play().then(() => {
+        console.log('BG Sound is playing...')
+    }).catch(error => {
+        console.error('Error playing sound:', error);
+    });
+}
+
+function pauseBackgroundSound(){
+    backgroundSound.pause();
+}
+
+//buttons audio 
+const btnSound = new Audio('../audio/game-buttons.mp3');
+function playBtnSound(){
+    console.log('Trying to play button sound...');
+    if(!btnSound.paused){
+        btnSound.currentTime = 0; // Resetting the audio to the beginning
+    }
+    btnSound.play().then(() => {
+        console.log('Button sound playing!');
+    }).catch(error => {
+        console.error('Error playing sound', error);
+    });
+}
+
+//start audio
+const startSound = new Audio('../audio/game-decide.mp3');
+function playStartSound(){
+    if(!startSound.paused){
+        startSound.currentTime = 0;
+    }
+    startSound.play().then(() => {
+        console.log('[sound of game starting...]');
+    }).catch(error => {
+        console.error('Error eat sound', error);
+    });
+}
+
+//eat audio
+const eatSound = new Audio('../audio/game-eat.mp3');
+function playEatSound(){
+    if(!eatSound.paused){
+        btnSound.currentTime = 0;
+    }
+    eatSound.play().then(() => {
+        console.log('[sound of cat eating...]');
+    }).catch(error => {
+        console.error('Error eat sound', error);
+    })
+}
+
+//eat bad fish audio
+const badFishSound = new Audio('../audio/game-badfish.mp3');
+function playBFSound(){
+    if(!badFishSound.paused){
+        badFishSound.currentTime = 0;
+    }
+    badFishSound.play().then(() => {
+        console.log('[cat ate bad fish...]');
+    }).catch(error => {
+        console.error('Error bad fish eat sound', error);
+    });
+}
+
+
+//date bar
+const currentDate= new Date();
+const timeDate = document.getElementById('time-date');
+const dateDate = document.getElementById('date-date');
+timeDate.innerHTML = `${currentDate.getHours()}:${currentDate.getMinutes()}:${currentDate.getSeconds()}`
+dateDate.innerHTML = `${currentDate.getFullYear()} ${currentDate.getMonth() + 1} ${currentDate.getDate()}`;
+
+let timerInterval;
+let seconds = 0;
+let minutes = 0;
+
+function startTimer() {
+    timerInterval = setInterval(() => {
+        seconds++;
+        if (seconds === 60) {
+            minutes++;
+            seconds = 0;
+        }
+        updateTimerDisplay();
+    }, 1000);
+}
+
+function stopTimer() {
+    clearInterval(timerInterval);
+}
+
+function updateTimerDisplay() {
+    const timerDisplay = document.getElementById('timer');
+    const scoreTimerDisplay = document.getElementById('time-score');
+    timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    scoreTimerDisplay = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+}
+
+//DOCUMENT EVENT LISTENERS
+document.addEventListener('DOMContentLoaded', function() {
+    const catProfiles = document.querySelectorAll('.cat-profile');
+
+    catProfiles.forEach(cat => {
+        cat.addEventListener('mouseenter', function(){
+            playBtnSound();
+        });
+        cat.addEventListener('click', function() {
+            catProfiles.forEach(cat => {
+                if (cat !== this){
+                    cat.classList.remove('clicked');
+                }
+            })
+            this.classList.toggle('clicked');
+        });
+    });
+});
+
+
+document.body.addEventListener('keydown', keyDirection); 
+const newCatAnimation = new CatAnimation();
+const border = document.getElementById("cat-canvas");
 let badInterval;
 let magicalInterval;
+
 function pressPlay(){
+    gameControls.isRunning = true;
     playBtn.innerHTML = "Pause";
     playBtn.classList.remove("play");
     playBtn.classList.add("pause");
@@ -590,6 +742,7 @@ function pressPlay(){
 }
 
 function pressPause(){
+    gameControls.isRunning = false;
     playBtn.innerHTML = "Play";
     playBtn.classList.remove("pause");
     playBtn.classList.add("play"); 
@@ -605,27 +758,9 @@ function pressPause(){
     stopTimer();
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    const catProfiles = document.querySelectorAll('.cat-profile');
-
-    catProfiles.forEach(cat => {
-        cat.addEventListener('click', function() {
-            catProfiles.forEach(cat => {
-                if (cat !== this){
-                    cat.classList.remove('clicked');
-                }
-            })
-            this.classList.toggle('clicked');
-        });
-    });
-});
-document.body.addEventListener('keydown', keyDirection); 
-const newCatAnimation = new CatAnimation();
-const border = document.getElementById("cat-canvas");
-
+//GAME INIT
 gameControls.init();
 gameControls.playBtn.addEventListener('click', function(){
-   
     gameControls.toggleRunning();  
     if(gameControls.isRunning){ 
         pressPlay();
