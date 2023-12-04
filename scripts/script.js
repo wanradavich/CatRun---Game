@@ -1,23 +1,23 @@
 "use strict";
-window.onload = function() {
-    const minWidth = 1024;
-    const minHeight = 768;
+// window.onload = function() {
+//     const minWidth = 1024;
+//     const minHeight = 768;
 
-    function setMinimumWindowSize() {
-        if (window.innerWidth < minWidth || window.innerHeight < minHeight) {
-            window.resizeTo(
-                Math.max(window.innerWidth, minWidth),
-                Math.max(window.innerHeight, minHeight)
-            );
-        }
-    }
+//     function setMinimumWindowSize() {
+//         if (window.innerWidth < minWidth || window.innerHeight < minHeight) {
+//             window.resizeTo(
+//                 Math.max(window.innerWidth, minWidth),
+//                 Math.max(window.innerHeight, minHeight)
+//             );
+//         }
+//     }
 
     // Initial check and setting minimum size
-    setMinimumWindowSize();
+//     setMinimumWindowSize();
 
-    // Adding event listener to ensure the size is maintained if the window is resized
-    window.addEventListener('resize', setMinimumWindowSize);
-};
+//     // Adding event listener to ensure the size is maintained if the window is resized
+//     window.addEventListener('resize', setMinimumWindowSize);
+// };
 
 
 
@@ -33,6 +33,14 @@ const gameControls = {
 
     toggleSound: function(){
         this.soundIsPlaying = !this.soundIsPlaying;
+    },
+    checkCatChosen: function() {
+        const chosenCat = document.querySelector('.cat-profile.clicked');
+        if (chosenCat) {
+            $('#runBtn').prop('disabled', false);
+        } else {
+            $('#runBtn').prop('disabled', true);
+        }
     },
     showModal: function(){
         if (this.currentScreen === 'game-screen'){
@@ -67,13 +75,15 @@ const gameControls = {
             $('#infoBtn').addClass('hide');
             $('#playBtn').addClass('hide');
             $('#helpBtn').removeClass('hide');
+            $('#restartBtn').addClass('hide')
         } else if (screenName === 'game-screen'){
             $('#homeBtn').addClass('hide');
             $('#quitBtn').removeClass('hide');
             $('#helpBtn').addClass('hide'); 
             $('#infoBtn').removeClass('hide');
             $('#playBtn').removeClass('hide');  
-            $('#soundBtn').removeClass('hide');  
+            $('#soundBtn').removeClass('hide'); 
+            $('#restartBtn').addClass('hide') 
             pressPlay();
             pressPause();
         } else if (screenName === 'gameover-screen'){
@@ -81,16 +91,17 @@ const gameControls = {
             stopTimer();
             $('#helpBtn').removeClass('hide');
             $('#quitBtn').addClass('hide');
-            $('#homeBtn').removeClass('hide');
+            $('#homeBtn').addClass('hide');
             $('#infoBtn').addClass('hide');
             $('#playBtn').addClass('hide');
             $('#soundBtn').addClass('hide'); 
-            
+            $('#restartBtn').removeClass('hide');
         } else if (screenName === 'instruction-screen'){
             $('#homeBtn').removeClass('hide');
             $('#helpBtn').addClass('hide');
             $('#quitBtn').addClass('hide');
             $('#playBtn').addClass('hide');
+            $('#restartBtn').addClass('hide');
         }
     },
     init: function(){
@@ -113,9 +124,6 @@ const gameControls = {
               </svg>`);
             }
         })
-        // $('#runBtn').on('click', () => {
-        //     this.switchScreen('game-screen');
-        // });
 
         $('#playPauseBtn').on('click', () => {
             this.toggleRunning();
@@ -148,11 +156,8 @@ const gameControls = {
             this.switchScreen('start-screen');
         })
 
-        $('#tryAgainBtn').on('click', () => {
-            playBtnSound();
-            
-            this.switchScreen('game-screen');
-            resetGame();
+        $('#restartBtn').on('click', () => {
+            this.switchScreen('start-screen');
         })
 
         $('#runBtn').prop('disabled', true);
@@ -274,12 +279,12 @@ class Cat {
 }
 
 //home page 
-helpBtn.addEventListener(('click'), () => {
-    instructionScreen.classList.remove('hide');
-    startScreen.classList.add('hide');
-    gameScreen.classList.add('hide');
-    gameOverScreen.classList.add('hide');
-})
+// helpBtn.addEventListener(('click'), () => {
+//     instructionScreen.classList.remove('hide');
+//     startScreen.classList.add('hide');
+//     gameScreen.classList.add('hide');
+//     gameOverScreen.classList.add('hide');
+// })
 
 //GAME VARIABLES
 const canvas = document.getElementById('game-board');
@@ -316,9 +321,12 @@ function drawGame(){
     if (gameControls.isRunning){
         gameInterval = setTimeout(drawGame, 1000 / speed);
         changeCatPosition();
+    
     let result = isGameOver();
     if(result){
-        displayGameOver();
+        resetGame();
+        gameControls.switchScreen('gameover-screen');
+        playGoSound();
     }
     clearScreen(); 
     displayScore(); 
@@ -334,6 +342,7 @@ function drawGame(){
 
 function isGameOver(){
     let gameOver = false;
+    
     if (xVelocity === 0 && yVelocity === 0){
         gameOver = false;
     }
@@ -356,6 +365,9 @@ function isGameOver(){
             gameOver = true;
             break;
         }
+        if ((part.x === fishGoodX && part.y === fishGoodY) || (part.x === fishMagicalX && part.y === fishMagicalY) || (part.x === fishBadX && part.y === fishBadY))
+        gameOver = true;
+        break;
     }
 
     return gameOver;
@@ -483,6 +495,13 @@ function checkBadFishCollision() {
         handleFishCollision(FishType.BAD);
         placeBadFish();
     }
+    if (score < 0){   
+        gameOver = true;
+        if(isGameOver){
+            gameControls.switchScreen('gameover-screen')
+        }
+        resetGame();
+    }
   }
 
 function handleFishCollision(fishType) {
@@ -506,13 +525,13 @@ function displayScore(){
     document.getElementById('score').textContent = `${score}`;  
 }
 
-function displayGameOver(){
-    document.getElementById('instruction-screen').classList.add('hide');
-    document.getElementById('start-screen').classList.add('hide');
-    document.getElementById('game-screen').classList.add('hide');
-    document.getElementById('gameover-screen').classList.remove('hide');
-    document.getElementById('gameover-score').textContent = `Score: ${score}`; 
-}
+// function displayGameOver(){
+//     document.getElementById('instruction-screen').classList.add('hide');
+//     document.getElementById('start-screen').classList.add('hide');
+//     document.getElementById('game-screen').classList.add('hide');
+//     document.getElementById('gameover-screen').classList.remove('hide');
+//     document.getElementById('gameover-score').textContent = `Score: ${score}`; 
+// }
 
 function resetGame() {
     // Reset game variables
@@ -660,6 +679,11 @@ function playBFSound(){
     });
 }
 
+const goSound = new Audio('../audio/game-end.mp3');
+function playGoSound(){
+    goSound.play();
+}
+
 
 //date bar
 const currentDate= new Date();
@@ -713,6 +737,28 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    const catProfiles = document.querySelectorAll('.cat-profile');
+
+    catProfiles.forEach(cat => {
+        cat.addEventListener('click', function() {
+            // If already clicked, return without toggling
+            if (this.classList.contains('clicked')) {
+                return;
+            }
+
+            // Remove 'clicked' class from other cats
+            catProfiles.forEach(cat => {
+                if (cat !== this) {
+                    cat.classList.remove('clicked');
+                }
+            });
+
+            // Toggle 'clicked' class for the current cat
+            this.classList.add('clicked');
+        });
+    });
+});
 
 document.body.addEventListener('keydown', keyDirection); 
 const newCatAnimation = new CatAnimation();
