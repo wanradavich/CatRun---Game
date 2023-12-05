@@ -29,8 +29,8 @@ body{
 /* modals */
 #infoModal{
     color: black;
-    width: 250px;
-    height: 400px;
+    width: 300px;
+    height: 800px;
     position: absolute;
     left: 50%;
     top: 50%; 
@@ -134,11 +134,13 @@ body{
     color: rgb(255, 126, 234);
     width: 100%;
     margin-top: 50px;
+    text-shadow: 1px 1px 2px goldenrod;
 }
 
 .catrun-txt{
     color: white;
     font-size: 45px;
+    text-shadow: 1px 1px 2px greenyellow;
 }
 
 .header-buttons{
@@ -229,7 +231,7 @@ margin-bottom: 32px;
 #select-txt{
     font-size: 20px;
     margin-top: 130px;
-    color: rgb(255, 146, 62);
+    color: rgb(255, 221, 0);
     text-align: center;
     font-size: 25px;
 }
@@ -298,11 +300,11 @@ margin-bottom: 32px;
     height: 100px;
     margin: 0 auto;
     font-size: 15px;
+    text-shadow: 1px 3px 2px black;
 }
 
 #profile-container{
     margin-right: 50px;
- 
 }
 
 #info-container>p{
@@ -310,7 +312,7 @@ margin-bottom: 32px;
 }
 
 #game-board{
-    border: solid 2px rgb(238, 250, 167);
+    border: solid 2px rgb(179, 226, 78);
     margin-bottom: 10px;
     margin-top: 10px;
 }
@@ -320,20 +322,20 @@ margin-bottom: 32px;
 }
 
 #cat-name{
-    color: pink;
+    color: hotpink;
     font-size: 18px;
+    text-shadow: 1px 3px 2px black;
 }
 
 #cat-canvas{
     background-color: black;
-    height: 180px;
-    width: 180px;
+    height: 170px;
+    width: 170px;
     border-radius: 50%;
     margin-top: 30px;
     margin-bottom: 50px;
     margin-right: 20px;
 }
-
 
 .c-play{
     background-color: white;
@@ -366,9 +368,9 @@ margin-bottom: 32px;
 }
 /*game over screen*/
 .go-txt{
-    color: yellow;
-    font-size: 25px;
-    margin-top: 90px;
+    color: rgb(255, 221, 0);
+    font-size: 35px;
+    margin-top: 150px;
     animation: 2s anim-lineUp ease-out infinite;
 }
 
@@ -391,18 +393,24 @@ margin-bottom: 32px;
 }
 
 .goscore-container{
-    font-size: 11px;
-    margin-top: 40px
+    font-size: 15px;
+    margin-top: 80px;
 }
 
 #go-score, #time-score{
-    color: rgb(229, 102, 229)
+    color: rgb(229, 102, 229);
+    text-shadow: 1px 2px 2px greenyellow;
+}
+
+.score-title{
+    color: greenyellow;
+    text-shadow: 1px 2px 2px rgb(229, 102, 229);
 }
 
 #tryAgainBtn{
-    font-size: 10px;
-    margin-top: 30px;
-    margin-bottom: 143px;
+    font-size: 13px;
+    margin-top: 60px;
+    margin-bottom: 190px;
 }
 
 

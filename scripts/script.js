@@ -254,7 +254,7 @@ class CatAnimation {
 
 //CAT player in Cat Canvas
 class Cat {
-    constructor(canvasWidth, canvasHeight, frameRate=5){
+    constructor(canvasWidth, canvasHeight, frameRate=3){
         this.canvasWidth = canvasWidth;
         this.canvasHeight = canvasHeight;
         this.image = document.getElementById('cat-img');
