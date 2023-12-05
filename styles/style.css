@@ -121,7 +121,7 @@ body{
 }
 
 #game-name-container{
-    border: solid 3px rgb(61, 178, 251);
+    border: solid 3px rgb(100, 181, 231);
     width: 95%;
     margin: 0 auto;
     padding-top: 20px;
@@ -134,18 +134,18 @@ body{
     color: rgb(255, 126, 234);
     width: 100%;
     margin-top: 50px;
-    text-shadow: 1px 1px 2px goldenrod;
+    text-shadow: 1px 1px 2px rgba(255, 0, 0, 0.757);
 }
 
 .catrun-txt{
     color: white;
     font-size: 45px;
-    text-shadow: 1px 1px 2px greenyellow;
+    text-shadow: 1px 2px 2px rgba(141, 209, 38, 0.726);
 }
 
 .header-buttons{
     width: 95%;
-    background-color: blue;
+    background-color: rgba(83, 16, 217, 0.841);
     padding-right: 10px;
     border-top: black solid 7px;
     margin: 0 auto;
@@ -234,6 +234,7 @@ margin-bottom: 32px;
     color: rgb(255, 221, 0);
     text-align: center;
     font-size: 25px;
+    text-shadow: 1px 1px 2px goldenrod;
 }
 
 .cat-profile {
@@ -312,7 +313,7 @@ margin-bottom: 32px;
 }
 
 #game-board{
-    border: solid 2px rgb(179, 226, 78);
+    border: solid 2px rgb(91, 187, 160);
     margin-bottom: 10px;
     margin-top: 10px;
 }
@@ -372,6 +373,7 @@ margin-bottom: 32px;
     font-size: 35px;
     margin-top: 150px;
     animation: 2s anim-lineUp ease-out infinite;
+    text-shadow: 1px 2px 2px rgb(229, 102, 229);
 }
 
 @keyframes anim-lineUp {
