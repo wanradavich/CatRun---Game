@@ -15,7 +15,7 @@ body{
 }
 
 #main{
-    width: 85%;
+    width: 95%;
     height: 100%;
     line-height: 16px;
     margin: 0 auto;
@@ -73,31 +73,37 @@ body{
 
 #footer {
     width: 100%;
-    background-color: navy;
+    background-color: black;
+    margin-top: 7px;
+}
+
+#footer-style-container{
+    width: 95%;
+    border: solid 2px rgb(61, 178, 251);
+    margin: 0 auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 .footer-content{
-    font-size: 8px;
-    color: white;
+    font-size: 10px;
+    color: rgb(192, 192, 192);
     text-align: center;
-    padding: 13px;
+    margin: 3px;
 }
 
 /*date header*/
-#date-span{
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-}
-
 #date-container{
-    height: 40px;
-    font-size: 10px;
+    height: 1px;
+    margin-top: 30px;
+    font-size: 11px;
+    width: 95%;
+    margin: 0 auto;
 }
 
 #name-date{
-    color: red;
-    background-color: yellow;
+    color:  red;
+    background-color: rgb(255, 213, 0);
     padding: 3px 10px;
 }
 
@@ -107,69 +113,89 @@ body{
 
 /* header */
 #header{
-    background-color: rgba(47, 255, 75, 0.69);
+    background-color: black;
     width: 100%;
     display: flex;
-    justify-content: center;
     text-align: center;
-    margin-bottom: 30px;
+    
+}
+
+#game-name-container{
+    border: solid 3px rgb(61, 178, 251);
+    width: 95%;
+    margin: 0 auto;
+    padding-top: 20px;
+    
 }
 
 .header-txt{
     line-height: 16px;
-    font-size: 16px;
-    color: black;
+    font-size: 15px;
+    color: rgb(255, 126, 234);
     width: 100%;
-    margin-top: 30px;
+    margin-top: 50px;
 }
 
-.header-txt>h1{
-    font-size: 40px;
+.catrun-txt{
+    color: white;
+    font-size: 45px;
 }
 
 .header-buttons{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    background-color: white;
+    width: 95%;
+    background-color: blue;
     padding-right: 10px;
     border-top: black solid 7px;
+    margin: 0 auto;
+}
+
+#soundBtn:hover,
+#soundBtn.clicked{
+    background-color: rgb(188, 46, 46);
+    color: aqua;
 }
 
 .header-buttons>.btn{
     margin: 15px;
-    font-size: 12px;
+    font-size: 13px;  
 }
 
+#helpBtn{
+    background-color: greenyellow;
+    color: rgb(92, 0, 92)
+}
+
+#homeBtn{
+    color: rgb(92, 0, 92)
+}
 
 /* instruction screen */
 .introduction{
-    color: rgb(255, 194, 80);
+    color: rgb(255, 228, 131);
     margin-bottom: 16px;
-    font-size: 10px;
-    line-height: 20px;
-    width: 85%;
     margin: 0 auto;
+    font-size: 15px;
+    line-height: 25px;
+    width: 75%; 
 }
 
-.catrun-txt{
-    color: navy;
+.intro-desc{
+    margin-top: 60px;
 }
 
 .icon{
-    width: 30px;
-    height: 30px;
+    width: 50px;
+    height: 50px;
 }
 
 .fish-title{
-    color: aquamarine;
-    font-size: 12px;
-
+    color: rgb(137, 241, 100);
+    font-size: 15x;
 }
 
 .fish-title-bad{
-    color: red;
-    font-size: 12px;
+    color: rgb(246, 88, 10);
+    font-size: 15px;
   
 }
 
@@ -185,43 +211,44 @@ margin-bottom: 32px;
 .flex-container{
     display: flex;
     justify-content: center;
-
+    margin: 0 auto;
 }
 
 .good-fish, .magical-fish, .bad-fish{
     width: 300px;
-    margin: 10px;
-  
+    margin: 35px;
 }
 
 .desc {
-    font-size: 10px;
+    font-size: 15px;
+    line-height: 20px;
+    margin-bottom: 16px;
 }
 
 /*start screen*/
 #select-txt{
     font-size: 20px;
-    margin-top: 100px;
-}
-
-#select-txt{
-    color: yellow;
+    margin-top: 130px;
+    color: rgb(255, 146, 62);
     text-align: center;
-    font-size: 18px;
-    margin-bottom: 70px;
+    font-size: 25px;
 }
 
 .cat-profile {
-    opacity: 0.7;
+    opacity: 0.9;
     transition: opacity 0.2s ease;
     cursor: pointer;
+    margin-top: 80px;
+    margin-bottom: 40px;
 }
 
 .cat-profile:hover,
 .cat-profile.clicked {
     opacity: 1;
+    transform: scale(1.1);
+    transition: 0.55;
+    z-index: 102;
 }
-
 
 #catname-display{
     font-size: 10px;
@@ -234,9 +261,10 @@ margin-bottom: 32px;
     color: white;
     font-family: "Press Start 2P";
     border-radius: 20px;
-    padding: 7px;
+    padding: 9px;
     animation:1s anim-lineUp ease-out infinite;
     margin-bottom: 50px;
+    margin-left: 10px;
     font-size: 13px;
   }
 
@@ -245,21 +273,23 @@ margin-bottom: 32px;
     flex-direction: row;
     justify-content: space-around;
     width: 100%;
+    box-sizing: border-box;
+    transition: all .35s ease;
 }
 
 .cat-profile{
-    width: 70px;
-    height: 70px;
+    width: 90px;
+    height: 90px;
 }
 
 #inputName{
     margin-top: 50px;
-    margin-bottom: 90px;
+    margin-bottom: 150px;
     border-radius: 5px;
     text-align: center;
-    height: 30px;
-    width: 240px;
-    font-size: 10px;
+    height: 40px;
+    width: 250px;
+    font-size: 14px;
 }
 
 /* game screen  */
@@ -267,11 +297,12 @@ margin-bottom: 32px;
     text-align: center;
     height: 100px;
     margin: 0 auto;
-    font-size: 13px;
+    font-size: 15px;
 }
 
 #profile-container{
     margin-right: 50px;
+ 
 }
 
 #info-container>p{
@@ -279,8 +310,9 @@ margin-bottom: 32px;
 }
 
 #game-board{
-    border: solid 2px yellow;
-    margin-bottom: 22px;
+    border: solid 2px rgb(238, 250, 167);
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 #cat-img{
@@ -289,13 +321,13 @@ margin-bottom: 32px;
 
 #cat-name{
     color: pink;
-    font-size: 17px;
+    font-size: 18px;
 }
 
 #cat-canvas{
-    background-color: white;
-    height: 150px;
-    width: 150px;
+    background-color: black;
+    height: 180px;
+    width: 180px;
     border-radius: 50%;
     margin-top: 30px;
     margin-bottom: 50px;
@@ -316,7 +348,7 @@ margin-bottom: 32px;
     height: 150px;
     width: 150px;
     border-radius: 50%;
-    border: 4px solid red;
+    border: 4px solid rgb(157, 49, 49);
 }
 
 .pause{

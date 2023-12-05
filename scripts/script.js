@@ -40,6 +40,7 @@ const gameControls = {
             $('#runBtn').prop('disabled', false);
         } else {
             $('#runBtn').prop('disabled', true);
+            btnSound.pause();
         }
     },
     showModal: function(){
@@ -83,7 +84,8 @@ const gameControls = {
             $('#infoBtn').removeClass('hide');
             $('#playBtn').removeClass('hide');  
             $('#soundBtn').removeClass('hide'); 
-            $('#restartBtn').addClass('hide') 
+            $('#restartBtn').addClass('hide'); 
+            
             pressPlay();
             pressPause();
         } else if (screenName === 'gameover-screen'){
@@ -123,7 +125,7 @@ const gameControls = {
                 <path d="M5 2.905a1 1 0 0 1 .9-.995l8-.8a1 1 0 0 1 1.1.995V3L5 4z"/>
               </svg>`);
             }
-        })
+        });
 
         $('#playPauseBtn').on('click', () => {
             this.toggleRunning();
@@ -144,21 +146,21 @@ const gameControls = {
         $('#helpBtn').on('click', () => {
             playBtnSound();
             this.switchScreen('instruction-screen');
-        })
+        });
 
         $('#infoBtn').on('click', () => {
             playBtnSound();
             this.showModal()
-        })
+        });
 
         $('#homeBtn').on('click', () => {
             playBtnSound();
             this.switchScreen('start-screen');
-        })
+        });
 
         $('#restartBtn').on('click', () => {
             this.switchScreen('start-screen');
-        })
+        });
 
         $('#runBtn').prop('disabled', true);
 
@@ -171,6 +173,13 @@ const gameControls = {
                 gameControls.switchScreen('game-screen');
             }
             pauseBackgroundSound();
+        });
+
+        $('#tryAgainBtn').on('click', () => {
+            playStartSound();
+            // resetGame();
+           
+            this.switchScreen('game-screen');
         })
 
         $('#calico').on('click', () => {
@@ -201,6 +210,7 @@ const gameControls = {
     }
 }
 
+//body of cat when eating fish
 class CatPart{
     constructor(x, y){
         this.x = x;
@@ -208,6 +218,7 @@ class CatPart{
     }
 }
 
+//running cat canvas for profile
 class CatAnimation {
     constructor() {
         this.catCanvas = document.getElementById('cat-canvas');
@@ -241,7 +252,7 @@ class CatAnimation {
     };
 }
 
-//CAT in Cat Canvas
+//CAT player in Cat Canvas
 class Cat {
     constructor(canvasWidth, canvasHeight, frameRate=5){
         this.canvasWidth = canvasWidth;
@@ -278,19 +289,11 @@ class Cat {
     }  
 }
 
-//home page 
-// helpBtn.addEventListener(('click'), () => {
-//     instructionScreen.classList.remove('hide');
-//     startScreen.classList.add('hide');
-//     gameScreen.classList.add('hide');
-//     gameOverScreen.classList.add('hide');
-// })
-
 //GAME VARIABLES
 const canvas = document.getElementById('game-board');
 const ctx = canvas.getContext('2d');
 
-let speed = 6;
+let speed = 4;
 
 let tileCount = 25;
 let tileSize = canvas.width/tileCount;
@@ -316,6 +319,18 @@ let score = 0;
 let randomScore = Math.floor(Math.random() * 6);
 let gameInterval;
 
+if (score > 3){
+    speed ++;
+} else if (score > 6){
+    speed++;
+} else if (score > 9){
+    speed++;
+} else if (score > 12){
+    speed++;
+} else if (score > 15){
+    speed++;
+}
+
 //MAIN GAME LOOP
 function drawGame(){ 
     if (gameControls.isRunning){
@@ -325,6 +340,7 @@ function drawGame(){
     let result = isGameOver();
     if(result){
         resetGame();
+        stopTimer();
         gameControls.switchScreen('gameover-screen');
         playGoSound();
     }
@@ -359,15 +375,16 @@ function isGameOver(){
         gameOver = true;
     }
 
+
     for (let i = 0; i < catParts.length; i++){
         let part = catParts[i];
         if (part.x === headX && part.y == headY){
             gameOver = true;
             break;
         }
-        if ((part.x === fishGoodX && part.y === fishGoodY) || (part.x === fishMagicalX && part.y === fishMagicalY) || (part.x === fishBadX && part.y === fishBadY))
-        gameOver = true;
-        break;
+        // if ((part.x === fishGoodX && part.y === fishGoodY) || (part.x === fishMagicalX && part.y === fishMagicalY) || (part.x === fishBadX && part.y === fishBadY))
+        // gameOver = true;
+        // break;// do a check if it works in the game
     }
 
     return gameOver;
@@ -525,14 +542,6 @@ function displayScore(){
     document.getElementById('score').textContent = `${score}`;  
 }
 
-// function displayGameOver(){
-//     document.getElementById('instruction-screen').classList.add('hide');
-//     document.getElementById('start-screen').classList.add('hide');
-//     document.getElementById('game-screen').classList.add('hide');
-//     document.getElementById('gameover-screen').classList.remove('hide');
-//     document.getElementById('gameover-score').textContent = `Score: ${score}`; 
-// }
-
 function resetGame() {
     // Reset game variables
     score = 0;
@@ -610,7 +619,7 @@ function keyDirection(event){
     }
 }
 
-//MISC FUNCTIONS : audio and date 
+//AUDIO AND DATE FUNCTIONS
 //background audio
 const backgroundSound = new Audio('../audio/game-bg.mp3');
 function playBackgroundSound() {
@@ -684,8 +693,7 @@ function playGoSound(){
     goSound.play();
 }
 
-
-//date bar
+// date bar
 const currentDate= new Date();
 const timeDate = document.getElementById('time-date');
 const dateDate = document.getElementById('date-date');

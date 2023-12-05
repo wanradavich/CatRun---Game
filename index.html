@@ -32,8 +32,11 @@
     <!--header-->
     <header id="header">
         <div class="header-txt">
-            <p>Welcome to</p>
-            <h1 class="catrun-txt">Cat Run!</h1>
+            <div id="game-name-container">
+                <p>Welcome to</p>
+                <h1 class="catrun-txt">Cat Run!</h1>
+            </div>
+            
             <div class="header-buttons">
                 <button id="playBtn" class="btn btn-success">Play</button>                
                 <button id="helpBtn" class="btn btn-info" >Help</button>
@@ -94,8 +97,7 @@
         </section>   
         <!--start-->
         <section id="start-screen" class="screen">
-            <p id="select-txt">choose your runner</p>  
-            <!-- <p id="catname-display">Oliver</p> -->
+            <p id="select-txt">...choose your runner...</p>  
             <div class="cat-choice">
                 <div class="profile-box">
                     <img id="calico" class="cat-profile" src="./images/calico-profile.png" alt="calico cat">
@@ -111,28 +113,29 @@
             <button id="runBtn">Start</button>
         </section>
         <!--game-->
-        <section id="game-screen" class="screen">
-            <div class="gamescreen-flex">
-                <div id="profile-container">
-                        <img id="cat-img" src="" alt="cat-animation"> 
-                        <canvas id="cat-canvas"></canvas>
-                    <div id="info-container">
-                        <p id="cat-name"></p>
-                        <br>
-                        <p>Score......<span id="score">10</span></p>
-                        <p>Clock...<span id="timer">00:00</span></p>
+            <section id="game-screen" class="screen">
+                <div class="gamescreen-flex" style="position: relative;">
+                    <div id="game-background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background-image: url('./images/background2.jpg'); background-size: cover; background-position: center;"></div>
+                    <div id="profile-container">
+                            <img id="cat-img" src="" alt="cat-animation"> 
+                            <canvas id="cat-canvas"></canvas>
+                        <div id="info-container">
+                            <p id="cat-name"></p>
+                            <br>
+                            <p>Score......<span id="score">10</span></p>
+                            <p>Clock...<span id="timer">00:00</span></p>
+                        </div>
                     </div>
-                </div>
-                <canvas id="game-board" width="600px" height="600px"></canvas>    
-            </div>     
-        </section>
+                    <canvas id="game-board" width="600px" height="600px"></canvas>    
+                </div>     
+            </section>
         <!--gameover-->
         <section id="gameover-screen" class="screen">
             <h2 class='go-txt'>game over</h2>
             <div class="goscore-container">
                 <p>score ..... <span id="go-score">10</span></p>
                 <p>time ... <span id="time-score">00:00</span></p>
-                <!-- <button id="tryAgainBtn" class="btn btn-danger">Try Again</button>                               -->
+                <button id="tryAgainBtn" class="btn btn-danger">Try Again</button>                              
             </div>
         </section>
         <!--Modal-->
@@ -156,16 +159,15 @@
           </div>
     </main>
     <footer id="footer">
-        <p class="footer-content">© 2023 Cat Run</p>
+        <div id="footer-style-container">
+            <p class="footer-content">© 2023 Cat Run</p>
+        </div>      
     </footer>
     
     <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="./scripts/script.js"></script>
-</body>
-</html>
-<body>
-    
+</body>   
     <script src="./scripts/script.js"></script>
 </body>
 </html
