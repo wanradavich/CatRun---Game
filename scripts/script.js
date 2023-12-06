@@ -1,25 +1,4 @@
 "use strict";
-// window.onload = function() {
-//     const minWidth = 1024;
-//     const minHeight = 768;
-
-//     function setMinimumWindowSize() {
-//         if (window.innerWidth < minWidth || window.innerHeight < minHeight) {
-//             window.resizeTo(
-//                 Math.max(window.innerWidth, minWidth),
-//                 Math.max(window.innerHeight, minHeight)
-//             );
-//         }
-//     }
-
-    // Initial check and setting minimum size
-//     setMinimumWindowSize();
-
-//     // Adding event listener to ensure the size is maintained if the window is resized
-//     window.addEventListener('resize', setMinimumWindowSize);
-// };
-
-
 
 const gameControls = {
     title: "Cat Run",
@@ -316,7 +295,7 @@ let xVelocity = 0;
 let yVelocity = 0;
 
 let score = 0;
-let randomScore = Math.floor(Math.random() * 6);
+let randomScore = Math.floor(Math.random() * 6) + 1;
 let gameInterval;
 
 if (score > 3){
@@ -331,6 +310,16 @@ if (score > 3){
     speed++;
 }
 
+// function getFinalTime() {
+//     const time = $('#time-score').text(); // Retrieve the text content of the element
+//     return time;
+// }
+
+function displayScore(){
+    let prevScore = score;
+    $('#go-score').html(prevScore);
+}
+
 //MAIN GAME LOOP
 function drawGame(){ 
     if (gameControls.isRunning){
@@ -339,13 +328,14 @@ function drawGame(){
     
     let result = isGameOver();
     if(result){
+        displayScore()
         resetGame();
         stopTimer();
         gameControls.switchScreen('gameover-screen');
         playGoSound();
     }
     clearScreen(); 
-    displayScore(); 
+    $('#score').html(score);
     drawGoodFish();
     drawMagicalFish();
     drawBadFish();
@@ -385,6 +375,10 @@ function isGameOver(){
         // if ((part.x === fishGoodX && part.y === fishGoodY) || (part.x === fishMagicalX && part.y === fishMagicalY) || (part.x === fishBadX && part.y === fishBadY))
         // gameOver = true;
         // break;// do a check if it works in the game
+    }
+
+    if (score < 0){
+        gameOver = true;
     }
 
     return gameOver;
@@ -538,9 +532,7 @@ function handleFishCollision(fishType) {
     }
   }
 
-function displayScore(){
-    document.getElementById('score').textContent = `${score}`;  
-}
+
 
 function resetGame() {
     // Reset game variables
@@ -703,6 +695,7 @@ dateDate.innerHTML = `${currentDate.getFullYear()} ${currentDate.getMonth() + 1}
 let timerInterval;
 let seconds = 0;
 let minutes = 0;
+let finalTime = '';
 
 function startTimer() {
     timerInterval = setInterval(() => {
@@ -717,6 +710,8 @@ function startTimer() {
 
 function stopTimer() {
     clearInterval(timerInterval);
+    finalTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    updateGameoverScreen();
 }
 
 function updateTimerDisplay() {
@@ -724,6 +719,12 @@ function updateTimerDisplay() {
     const scoreTimerDisplay = document.getElementById('time-score');
     timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     scoreTimerDisplay = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+}
+
+function updateGameoverScreen() {
+    //display the final time with id 
+    const timeScore = document.getElementById('time-score');
+    timeScore.textContent = `${finalTime}`;
 }
 
 //DOCUMENT EVENT LISTENERS
@@ -773,6 +774,8 @@ const newCatAnimation = new CatAnimation();
 const border = document.getElementById("cat-canvas");
 let badInterval;
 let magicalInterval;
+
+
 
 function pressPlay(){
     gameControls.isRunning = true;
