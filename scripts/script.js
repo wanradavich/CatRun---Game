@@ -119,6 +119,7 @@ const gameControls = {
         $('#quitBtn').on('click', () => {
             playBtnSound();
             resetGame();
+            resetTimer();
             this.switchScreen('start-screen');
         });
 
@@ -156,9 +157,8 @@ const gameControls = {
 
         $('#tryAgainBtn').on('click', () => {
             playStartSound();
-            // resetGame();
-           
             this.switchScreen('game-screen');
+            resetTimer();
         })
 
         $('#calico').on('click', () => {
@@ -298,26 +298,28 @@ let score = 0;
 let randomScore = Math.floor(Math.random() * 6) + 1;
 let gameInterval;
 
-if (score > 3){
+//check if it's working//
+if (score == 3){
     speed ++;
-} else if (score > 6){
+} else if (score == 6){
     speed++;
-} else if (score > 9){
+} else if (score == 9){
     speed++;
-} else if (score > 12){
+} else if (score == 12){
     speed++;
-} else if (score > 15){
+} else if (score == 15){
     speed++;
 }
 
-// function getFinalTime() {
-//     const time = $('#time-score').text(); // Retrieve the text content of the element
-//     return time;
-// }
-
+//score in gameover
 function displayScore(){
     let prevScore = score;
     $('#go-score').html(prevScore);
+}
+
+//score in gameboard
+function currentScore() {
+    $('#score').html(score);
 }
 
 //MAIN GAME LOOP
@@ -335,7 +337,7 @@ function drawGame(){
         playGoSound();
     }
     clearScreen(); 
-    $('#score').html(score);
+    currentScore();
     drawGoodFish();
     drawMagicalFish();
     drawBadFish();
@@ -368,7 +370,8 @@ function isGameOver(){
 
     for (let i = 0; i < catParts.length; i++){
         let part = catParts[i];
-        if (part.x === headX && part.y == headY){
+        if (part.x === fishBadX && part.y == fishBadY){
+
             gameOver = true;
             break;
         }
@@ -558,6 +561,7 @@ function resetGame() {
     clearInterval(magicalInterval);
     clearTimeout(gameInterval);
     
+    //reset timer
     $('#gameover-screen').addClass('hide');
     $('#start-screen').addClass('hide');
     $('#instruction-screen').addClass('hide');
@@ -721,6 +725,13 @@ function updateTimerDisplay() {
     scoreTimerDisplay = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
 
+function resetTimer() {
+    clearInterval(timerInterval);
+    minutes = 0;
+    seconds = 0;
+    updateTimerDisplay();
+}
+
 function updateGameoverScreen() {
     //display the final time with id 
     const timeScore = document.getElementById('time-score');
@@ -793,7 +804,7 @@ function pressPlay(){
         badInterval = setInterval(placeBadFish, 5000);
     }
     if (!magicalInterval) {
-        magicalInterval = setInterval(placeMagicalFish, 2000);
+        magicalInterval = setInterval(placeMagicalFish, 4000);
     }
     startTimer();
 }
