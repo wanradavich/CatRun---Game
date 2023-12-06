@@ -7,8 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link rel="manifest" href="/site.webmanifest">
-    <title>Home 🐈</title>
+    <title>CatRun 🐈</title>
 </head><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +18,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <title>Cat Run - Instructions 🐈</title>
+    <title>Cat Run - Instructions</title>
 </head>
 <body>
     <div id="date-container">
@@ -36,7 +35,6 @@
                 <p>Welcome to</p>
                 <h1 class="catrun-txt">Cat Run!</h1>
             </div>
-            
             <div class="header-buttons">
                 <button id="playBtn" class="btn btn-success">Play</button>                
                 <button id="helpBtn" class="btn btn-info" >Help</button>
@@ -69,44 +67,39 @@
                     <img class="icon" src="./images/good-fish.png" alt="good-fish image">
                     <p class="fish-title">Eat Good Fish:</p>
                     <p class="desc">Cat is very hungry! Help it move around the 
-                        Cat World using the arrow keys on your keyboard. Guide him to eat only good 
-                        and magical fish that appear to score a point. Every fish it eats makes it 
+                        Cat World using the arrow keys on your keyboard. Guide him to eat only the good 
+                        fish that appear to score a point each time. Every fish it eats makes it 
                         grow longer and stronger!
                     </p>
                 </div>
                 <div class="magical-fish">
                     <img class="icon" src="./images/magical-fish.png" alt="magical-fish image">
                     <p class="fish-title">Eat Magical Fish:</p>
-                    <p class="desc">Cat is keeping score of how much it eats.
-                        It's ultimate dream is to brag to the cats back home!
-                        Help the cat score more points by eating Magical Fish. You never know how 
-                        many points Magical Fish might bring you. 
+                    <p class="desc"> To become even stronger, look out for the magical fish!
+                        They move around quite quickly, but once you catch one you're
+                        in luck! Each of these fish contain a random score and increases
+                        your cat's body length accordingly.
                     </p>
                 </div>
                 <div class="bad-fish">
                     <img class="icon" src="./images/bad-fish.png" alt="bad fish image">
                     <p class="fish-title-bad">Avoid Bad Fish:</p>
                     <p class="desc">Beware of tricky bad fish traps! At first
-                        glimpse, they look just like a good fish. Aside from that, Don't let Cat 
-                        run into the walls or himself. If he does, the game 
-                        will be over.
+                        glance, they look just like a good fish. Like magical fish, 
+                        they contain random scores but decrease your cat's body 
+                        length and score. Aside from that, Don't let Cat 
+                        run into the walls or itself. If it does, it's gameover.
                     </p>
                 </div>          
             </div>
-            
         </section>   
         <!--start-->
         
         <section id="start-screen" class="screen">
-            <!-- <div class="gamescreen-flex-2"> -->
-                
-                <!-- <div id="game-background-home" style="position: absolute; top: 0; left: 0; width: 95%; height: 100%; z-index: -1; background-image: url('./images/background4.jpg'); background-size: cover; background-position: center;"></div> -->
-            <!-- </div> -->
                 <div id="bghome-container" style="position: relative;">
                     <div class="homeimg-container">
                         <div id="game-background-home" ></div>
                     </div>
-                    
                     <div id="home-content-container">
                         <p id="select-txt">...choose your runner...</p>  
                         <div class="cat-choice">
@@ -136,7 +129,8 @@
                             <p id="cat-name"></p>
                             <br>
                             <p>Score......<span id="score">10</span></p>
-                            <p>Clock...<span id="timer">00:00</span></p>
+                            <p>Clock...<span id="timer">01:00</span></p>
+                            <p id="min-sec">(min:sec)</p>
                         </div>
                     </div>
                     <canvas id="game-board" width="600px" height="600px"></canvas>    

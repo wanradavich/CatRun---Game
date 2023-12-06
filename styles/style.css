@@ -94,7 +94,6 @@ body{
 /*date header*/
 #date-container{
     height: 1px;
-    margin-top: 30px;
     font-size: 11px;
     width: 95%;
     margin: 0 auto;
@@ -110,13 +109,13 @@ body{
     color: red;    
 }
 
+
 /* header */
 #header{
     background-color: black;
     width: 100%;
     display: flex;
     text-align: center;
-    
 }
 
 #game-name-container{
@@ -124,7 +123,7 @@ body{
     width: 95%;
     margin: 0 auto;
     padding-top: 20px;
-    
+    padding-bottom: 20px;
 }
 
 .header-txt{
@@ -172,11 +171,11 @@ body{
 /* instruction screen */
 .introduction{
     color: rgb(255, 228, 131);
-    margin-bottom: 16px;
+    margin-bottom: 10px;
     margin: 0 auto;
     font-size: 15px;
     line-height: 25px;
-    width: 75%; 
+    width: 90%; 
 }
 
 .intro-desc{
@@ -215,14 +214,14 @@ margin-bottom: 32px;
 }
 
 .good-fish, .magical-fish, .bad-fish{
-    width: 300px;
-    margin: 35px;
+    width: 380px;
+    margin: 30px;
 }
 
 .desc {
     font-size: 15px;
     line-height: 20px;
-    margin-bottom: 16px;
+    margin-bottom: 10px;
 }
 
 /*start screen*/
@@ -237,8 +236,7 @@ margin-bottom: 32px;
 }
 
 .cat-profile {
-    opacity: 0.9;
-    transition: opacity 0.2s ease;
+    opacity: 1;
     cursor: pointer;
     margin-top: 80px;
     margin-bottom: 40px;
@@ -246,7 +244,6 @@ margin-bottom: 32px;
 
 .cat-profile:hover,
 .cat-profile.clicked {
-    opacity: 1;
     transform: scale(1.1);
     transition: 0.55;
     z-index: 102;
@@ -286,8 +283,7 @@ margin-bottom: 32px;
 }
 
 #inputName{
-    /* margin-top: 50px; */
-    /* margin-bottom: 150px; */
+   
     border-radius: 5px;
     text-align: center;
     height: 40px;
@@ -306,23 +302,21 @@ margin-bottom: 32px;
     background-size: cover;
     background-position: center center;
     margin-left: 38px;
+    /* border-right: solid 3px rgb(100, 181, 231);
+    border-left: solid 3px rgb(100, 181, 231); */
   }
 
 .homeimg-container{
-    height: 250px;
+    height: 265px;
 }
 
-
-#home-content-container{
-    
-}
 /* game screen  */
 #info-container{
     text-align: center;
     height: 100px;
     margin: 0 auto;
     font-size: 15px;
-    text-shadow: 1px 3px 2px black;
+    text-shadow: 1px 5px 2px black;
 }
 
 #profile-container{
@@ -346,7 +340,7 @@ margin-bottom: 32px;
 #cat-name{
     color: hotpink;
     font-size: 18px;
-    text-shadow: 1px 3px 2px black;
+    text-shadow: 1px 5px 2px black;
 }
 
 #cat-canvas{
@@ -388,6 +382,12 @@ margin-bottom: 32px;
     justify-content: center;
     align-items: center;
 }
+
+#min-sec{
+    font-size: 9;
+    text-shadow: 1px 1px 2px black;
+}
+
 /*game over screen*/
 .go-txt{
     color: rgb(255, 221, 0);
