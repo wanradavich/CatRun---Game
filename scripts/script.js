@@ -68,7 +68,7 @@ const gameControls = {
             pressPlay();
             pressPause();
         } else if (screenName === 'gameover-screen'){
-            //clear timer
+            //clears timer too
             stopTimer();
             $('#helpBtn').removeClass('hide');
             $('#quitBtn').addClass('hide');
@@ -119,7 +119,6 @@ const gameControls = {
         $('#quitBtn').on('click', () => {
             playBtnSound();
             resetGame();
-            resetTimer();
             this.switchScreen('start-screen');
         });
 
@@ -151,6 +150,7 @@ const gameControls = {
                 $('#inputName').val('');
                 $('#inputName').attr('placeholder', '[enter cat name]');
                 gameControls.switchScreen('game-screen');
+                resetTimer();
             }
             pauseBackgroundSound();
         });
@@ -185,7 +185,6 @@ const gameControls = {
                 $('#runBtn').prop('disabled', true);
             }
         });
-      
     }
 }
 
@@ -276,12 +275,16 @@ let speed = 4;
 
 let tileCount = 25;
 let tileSize = canvas.width/tileCount;
+
+//cat head coordinates
 let headX = 10;
 let headY = 10;
+
+//body part array and cat's tail(body) length
 const catParts = [];
 let tailLength = 0;
 
-//Fish X/Y
+//Fish X/Y coordinates
 let fishGoodX = 5;
 let fishGoodY = 5
 
@@ -322,35 +325,9 @@ function currentScore() {
     $('#score').html(score);
 }
 
-//MAIN GAME LOOP
-function drawGame(){ 
-    if (gameControls.isRunning){
-        gameInterval = setTimeout(drawGame, 1000 / speed);
-        changeCatPosition();
-    
-    let result = isGameOver();
-    if(result){
-        displayScore()
-        resetGame();
-        stopTimer();
-        gameControls.switchScreen('gameover-screen');
-        playGoSound();
-    }
-    clearScreen(); 
-    currentScore();
-    drawGoodFish();
-    drawMagicalFish();
-    drawBadFish();
-    checkGoodFishCollion();
-    checkMagicalFishCollision();
-    checkBadFishCollision();
-    drawCat(); 
-    }
-}
-
 function isGameOver(){
     let gameOver = false;
-    
+    //wall collision check
     if (xVelocity === 0 && yVelocity === 0){
         gameOver = false;
     }
@@ -367,19 +344,29 @@ function isGameOver(){
         gameOver = true;
     }
 
-
-    for (let i = 0; i < catParts.length; i++){
+    // Check collision with body parts
+    for (let i = 1; i < catParts.length; i++){
         let part = catParts[i];
-        if (part.x === fishBadX && part.y == fishBadY){
-
+        if (part.x === headX && part.y === headY){
             gameOver = true;
             break;
         }
-        // if ((part.x === fishGoodX && part.y === fishGoodY) || (part.x === fishMagicalX && part.y === fishMagicalY) || (part.x === fishBadX && part.y === fishBadY))
-        // gameOver = true;
-        // break;// do a check if it works in the game
     }
 
+    // Check collision with fish
+    if (!gameOver) {
+        for (let i = 0; i < catParts.length; i++){
+            let part = catParts[i];
+            if ((part.x === fishBadX && part.y === fishBadY) ||
+                (part.x === fishMagicalX && part.y === fishMagicalY) ||
+                (part.x === fishGoodX && part.y === fishGoodY)){
+                gameOver = true;
+                break;
+            }
+        }
+    }
+   
+    //score below 0 check for gameover
     if (score < 0){
         gameOver = true;
     }
@@ -387,12 +374,13 @@ function isGameOver(){
     return gameOver;
 }
 
+//clears over anything from screen 
 function clearScreen(){
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
-//CAT AND FISH CANVAS CHARACTERS
+//CAT AND CANVAS CHARACTERS
 const catImg = new Image();
 catImg.src = '../images/brown-profile.png'
 
@@ -435,13 +423,20 @@ function changeCatPosition(){
     }   
 }
 
-const FishType = {
-    GOOD: 'good',
-    MAGICAL: 'magical',
-    BAD: 'bad',
-  };
-  
-let currentFishType = FishType.GOOD;
+//FISH CANVAS CHARACTERS
+// Check if the fish coordinates overlap with the cat or body parts
+function isFishOverlap(fishX, fishY) {
+    if (fishX === headX && fishY === headY) {
+        return true; // Fish overlaps with cat's head
+    }
+    for (let i = 0; i < catParts.length; i++) {
+        let part = catParts[i];
+        if (part.x === fishX && part.y === fishY) {
+            return true; // Fish overlaps with cat's body
+        }
+    }
+    return false; // Fish doesn't overlap with cat or body parts
+}
 
 //Good Fish
 function drawGoodFish(){
@@ -454,13 +449,25 @@ function drawGoodFish(){
     )
 }
 
+// random coordinates to generate good fish
+function placeGoodFish(){
+    do {
+        fishGoodX = Math.floor(Math.random() * tileCount);
+        fishGoodY = Math.floor(Math.random() * tileCount);
+    } while (isFishOverlap(fishGoodX, fishGoodY));
+}
+
+//good fish collision check
 function checkGoodFishCollion() {
     if (fishGoodX === headX && fishGoodY === headY) {
         playEatSound();
-        handleFishCollision(FishType.GOOD);
+        // handleFishCollision(FishType.GOOD);
         fishGoodX = Math.floor(Math.random() * tileCount);
         fishGoodY = Math.floor(Math.random() * tileCount);
+        //handle tail length and score
+        score ++;
         tailLength++;
+        placeGoodFish();
     }
   }
 
@@ -475,15 +482,21 @@ function drawMagicalFish(){
     )
 }
 
+//random coordinates to generate magical fish
 function placeMagicalFish(){
-    fishMagicalX = Math.floor(Math.random() * tileCount);
-    fishMagicalY = Math.floor(Math.random() * tileCount);
+    do {
+        fishMagicalX = Math.floor(Math.random() * tileCount);
+        fishMagicalY = Math.floor(Math.random() * tileCount);
+    } while (isFishOverlap(fishMagicalX, fishMagicalY));
 }
 
+//magical fish collision
 function checkMagicalFishCollision() {
     if (fishMagicalX === headX && fishMagicalY === headY) {
         playEatSound();
-        handleFishCollision(FishType.MAGICAL);
+        //handle tail length and score
+        score += randomScore;
+        tailLength++
         placeMagicalFish();
     }
   }
@@ -498,44 +511,25 @@ function drawBadFish(){
         tileSize
     )
 }
+//random coordinates to generate bad fish
 function placeBadFish(){
-    fishBadX = Math.floor(Math.random() * tileCount);
-    fishBadY = Math.floor(Math.random() * tileCount);
+    do {
+        fishBadX = Math.floor(Math.random() * tileCount);
+        fishBadY = Math.floor(Math.random() * tileCount);
+    } while (isFishOverlap(fishBadX, fishBadY));
 }
 
+//bad fish collision check
 function checkBadFishCollision() {
     if (fishBadX === headX && fishBadY === headY) {
         playBFSound()
-        handleFishCollision(FishType.BAD);
+        //handle tail length and score
+        score -= randomScore;
+        tailLength += randomScore;
         placeBadFish();
     }
-    if (score < 0){   
-        gameOver = true;
-        if(isGameOver){
-            gameControls.switchScreen('gameover-screen')
-        }
-        resetGame();
-    }
+
   }
-
-function handleFishCollision(fishType) {
-    switch (fishType) {
-      case FishType.GOOD:
-        score++;
-        break;
-      case FishType.MAGICAL:
-        score += randomScore;
-        break;
-      case FishType.BAD:
-        tailLength += randomScore;
-        score -= randomScore;
-        break;
-      default:
-        break;
-    }
-  }
-
-
 
 function resetGame() {
     // Reset game variables
@@ -632,8 +626,8 @@ function pauseBackgroundSound(){
 }
 
 //buttons audio 
-const btnSound = new Audio('../audio/game-buttons.mp3');
 function playBtnSound(){
+    const btnSound = new Audio('../audio/game-buttons.mp3');
     console.log('Trying to play button sound...');
     if(!btnSound.paused){
         btnSound.currentTime = 0; // Resetting the audio to the beginning
@@ -645,37 +639,36 @@ function playBtnSound(){
     });
 }
 
+
 //start audio
-const startSound = new Audio('../audio/game-decide.mp3');
 function playStartSound(){
+    const startSound = new Audio('../audio/game-decide.mp3');
     if(!startSound.paused){
-        startSound.currentTime = 0;
+        startSound.currentTime = 0;// Resetting the audio to the beginning
     }
     startSound.play().then(() => {
         console.log('[sound of game starting...]');
+    }).catch(error => {
+        console.error('Error starting sound', error);
+    });
+}
+
+
+//eat audio
+function playEatSound(){
+    const eatSound = new Audio('../audio/game-eat.mp3');
+    eatSound.play().then(() => {
+        console.log('[sound of cat eating...]');
     }).catch(error => {
         console.error('Error eat sound', error);
     });
 }
 
-//eat audio
-const eatSound = new Audio('../audio/game-eat.mp3');
-function playEatSound(){
-    if(!eatSound.paused){
-        btnSound.currentTime = 0;
-    }
-    eatSound.play().then(() => {
-        console.log('[sound of cat eating...]');
-    }).catch(error => {
-        console.error('Error eat sound', error);
-    })
-}
-
 //eat bad fish audio
-const badFishSound = new Audio('../audio/game-badfish.mp3');
 function playBFSound(){
+    const badFishSound = new Audio('../audio/game-badfish.mp3');
     if(!badFishSound.paused){
-        badFishSound.currentTime = 0;
+        badFishSound.currentTime = 0;// Resetting the audio to the beginning
     }
     badFishSound.play().then(() => {
         console.log('[cat ate bad fish...]');
@@ -683,6 +676,7 @@ function playBFSound(){
         console.error('Error bad fish eat sound', error);
     });
 }
+
 
 const goSound = new Audio('../audio/game-end.mp3');
 function playGoSound(){
@@ -783,9 +777,10 @@ document.addEventListener('DOMContentLoaded', function() {
 document.body.addEventListener('keydown', keyDirection); 
 const newCatAnimation = new CatAnimation();
 const border = document.getElementById("cat-canvas");
+//fish intervals to be set in pressPlay
+let goodInterval;
 let badInterval;
 let magicalInterval;
-
 
 
 function pressPlay(){
@@ -800,8 +795,12 @@ function pressPlay(){
         drawGame(); 
     }
 
+    if (!goodInterval) {
+        goodInterval = setInterval(placeGoodFish, 9000);
+    }
+
     if (!badInterval) {
-        badInterval = setInterval(placeBadFish, 5000);
+        badInterval = setInterval(placeBadFish, 2000);
     }
     if (!magicalInterval) {
         magicalInterval = setInterval(placeMagicalFish, 4000);
@@ -836,3 +835,29 @@ gameControls.playBtn.addEventListener('click', function(){
         pressPause();
     }
 });
+
+//MAIN GAME LOOP
+function drawGame(){ 
+    if (gameControls.isRunning){
+        gameInterval = setTimeout(drawGame, 1000 / speed);
+        changeCatPosition();
+    
+    let result = isGameOver();
+    if(result){
+        displayScore()
+        resetGame();
+        stopTimer();
+        gameControls.switchScreen('gameover-screen');
+        playGoSound();
+    }
+    clearScreen(); 
+    currentScore();
+    drawGoodFish();
+    drawMagicalFish();
+    drawBadFish();
+    checkGoodFishCollion();
+    checkMagicalFishCollision();
+    checkBadFishCollision();
+    drawCat(); 
+    }
+}
