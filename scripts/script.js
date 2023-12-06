@@ -1,25 +1,4 @@
 "use strict";
-// window.onload = function() {
-//     const minWidth = 1024;
-//     const minHeight = 768;
-
-//     function setMinimumWindowSize() {
-//         if (window.innerWidth < minWidth || window.innerHeight < minHeight) {
-//             window.resizeTo(
-//                 Math.max(window.innerWidth, minWidth),
-//                 Math.max(window.innerHeight, minHeight)
-//             );
-//         }
-//     }
-
-    // Initial check and setting minimum size
-//     setMinimumWindowSize();
-
-//     // Adding event listener to ensure the size is maintained if the window is resized
-//     window.addEventListener('resize', setMinimumWindowSize);
-// };
-
-
 
 const gameControls = {
     title: "Cat Run",
