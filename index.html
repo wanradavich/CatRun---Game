@@ -68,26 +68,26 @@
                     <p class="fish-title">Eat Good Fish:</p>
                     <p class="desc">Cat is very hungry! Help it move around the 
                         Cat World using the arrow keys on your keyboard. Guide him to eat only the good 
-                        fish that appear to score a point each time. Every fish it eats makes it 
-                        grow 1 bit longer and stronger!
-                    </p>
+                        fish that appear to score <span class="good-bold">1 point </span>each time. Every fish it eats makes it 
+                        <span class="good-bold">grow 1 bit longer and stronger!</span>
+                    
                 </div>
                 <div class="magical-fish">
                     <img class="icon" src="./images/magical-fish.png" alt="magical-fish image">
                     <p class="fish-title">Eat Magical Fish:</p>
                     <p class="desc"> Look out for the magical fish!
                         They move around very quickly, but once you catch one you're
-                        in luck! Each of these fish contain a random score (1-6 pnts) that help increase
-                        your points and 1 bit body length.
+                        in luck! Each of these fish contain <span class="mag-bold"> a random score (1-6 points)</span> that help increase
+                        your points and <span class="mag-bold">1 bit body length. </span>
                     </p>
                 </div>
                 <div class="bad-fish">
                     <img class="icon" src="./images/bad-fish.png" alt="bad fish image">
                     <p class="fish-title-bad">Avoid Bad Fish:</p>
                     <p class="desc">Beware of bad fish traps. At first
-                        glance, they look just like a good fish. Each bad fish 
-                        also contains a random score (1-6 pnts) but decreases 
-                        your score accordingly. If your score is less than 0, it's gameover.
+                        glance, they look just like a good fish. But each bad fish 
+                        will <span class="bad-bold">decrease your score by 20 points</span> and increasing a random number 
+                        of body bits to your cat. If your score is less than 0, it's gameover.
                         Also, don't let your cat run into walls or itself!
                     </p>
                 </div>          
@@ -154,9 +154,9 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p><img class="modal-img" src="./images/good-fish.png" />  Good Fish: <p class="sub-info">+1</p></p>
-                    <p><img class="modal-img" src="./images/magical-fish.png" />  Magical Fish: <p class="sub-info">+Random</p></p>
-                    <p><img class="modal-img" src="./images/bad-fish.png" />  Bad Fish: <p class="sub-info-bad">-Random</p></p>
+                    <p><img class="modal-img" src="./images/good-fish.png" />  Good Fish: <p class="sub-info">+1 pnt / +1 body bit</p></p>
+                    <p><img class="modal-img" src="./images/magical-fish.png" />  Magical Fish: <p class="sub-info">+Random pnt / +1 body bit</p></p>
+                    <p><img class="modal-img" src="./images/bad-fish.png" />  Bad Fish: <p class="sub-info-bad">-20 pnt / +random body bits</p></p>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

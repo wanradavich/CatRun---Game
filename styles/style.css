@@ -29,13 +29,13 @@ body{
 /* modals */
 #infoModal{
     color: black;
-    width: 300px;
+    width: 400px;
     height: 800px;
     position: absolute;
     left: 50%;
     top: 50%; 
-    margin-left: -125px;
-    margin-top: -180px;
+    margin-left: -180px;
+    margin-top: -60px;
 }
 
 .modal-title{
@@ -169,6 +169,10 @@ body{
 }
 
 /* instruction screen */
+.good-bold, .mag-bold, .bad-bold{
+    color: aqua;
+}
+
 .introduction{
     color: rgb(255, 228, 131);
     margin-bottom: 10px;

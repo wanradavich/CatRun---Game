@@ -501,7 +501,7 @@ function checkMagicalFishCollision() {
     }
   }
 
-//Bad Fish
+// Bad Fish
 function drawBadFish(){
     ctx.drawImage(
         badFishImg,
@@ -511,7 +511,8 @@ function drawBadFish(){
         tileSize
     )
 }
-//random coordinates to generate bad fish
+
+// random coordinates to generate bad fish
 function placeBadFish(){
     do {
         fishBadX = Math.floor(Math.random() * tileCount);
@@ -519,17 +520,20 @@ function placeBadFish(){
     } while (isFishOverlap(fishBadX, fishBadY));
 }
 
-//bad fish collision check
+// bad fish collision check
 function checkBadFishCollision() {
     if (fishBadX === headX && fishBadY === headY) {
         playBFSound()
         //handle tail length and score
-        score -= randomScore;
+        score -= 20;
         tailLength += randomScore;
         placeBadFish();
     }
 
   }
+
+//   TRAIL 
+
 
 function resetGame() {
     // Reset game variables
@@ -567,8 +571,6 @@ function resetGame() {
 
 
 //KEY DIRECTIONS CONTROLS
-let isSpaceBar = false;
-
 function keyDirection(event){
     if (!gameControls.isRunning) return;
     //up
@@ -594,18 +596,6 @@ function keyDirection(event){
         if (xVelocity == -1) return; 
         yVelocity = 0;
         xVelocity = 1;
-    }
-
-    //spacebar play/pause
-    if (event.keyCode == 32 && !isSpaceBar){
-        isSpaceBar = true;
-        if (gameControls.isRunning){
-            pressPlay();
-        } else {
-            pressPause();
-        }  
-    } else if (event.keyCode !== 32){
-        isSpaceBar = false;
     }
 }
 
@@ -714,7 +704,6 @@ function stopTimer() {
 
 function updateTimerDisplay() {
     const timerDisplay = document.getElementById('timer');
-    const scoreTimerDisplay = document.getElementById('time-score');
     timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     scoreTimerDisplay = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
