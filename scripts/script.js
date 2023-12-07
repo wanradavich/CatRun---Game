@@ -301,19 +301,18 @@ let score = 0;
 let randomScore = Math.floor(Math.random() * 6) + 1;
 let gameInterval;
 
-//check if it's working//
-if (score == 3){
-    speed ++;
-} else if (score == 6){
-    speed++;
-} else if (score == 9){
-    speed++;
-} else if (score == 12){
-    speed++;
-} else if (score == 15){
-    speed++;
+//speed conditions
+function updateSpeed() {
+    if (score > 3 && score <= 6) {
+        speed = 5; 
+    } else if (score > 6 && score <= 9) {
+        speed = 6; 
+    } else if (score > 9 && score < 12) {
+        speed = 7; 
+    } else if (score == 12) {
+        speed = 7; 
+    }
 }
-
 //score in gameover
 function displayScore(){
     let prevScore = score;
@@ -792,7 +791,7 @@ function pressPlay(){
         badInterval = setInterval(placeBadFish, 2000);
     }
     if (!magicalInterval) {
-        magicalInterval = setInterval(placeMagicalFish, 4000);
+        magicalInterval = setInterval(placeMagicalFish, 3000);
     }
     startTimer();
 }
@@ -848,5 +847,6 @@ function drawGame(){
     checkMagicalFishCollision();
     checkBadFishCollision();
     drawCat(); 
+    updateSpeed();
     }
 }
