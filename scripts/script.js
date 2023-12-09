@@ -587,8 +587,10 @@ function checkBadFishCollision() {
         score -= 20;
         tailLength += randomScore;
         placeBadFish();
+    if (score < 0){
+        return gameOver;
     }
-
+    }
   }
 
 function resetGame() {
