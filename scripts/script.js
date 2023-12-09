@@ -2,28 +2,33 @@
 
 //game controls object literal 
 const gameControls = {
-    title: "Cat Run",
-    isRunning: false,
-    wasRunning: false, 
+    title: "Cat Run", 
+    isRunning: false, //flag if game is running
+    wasRunning: false, //flag to store previous game state
     currentScreen: 'start-screen', //used with the switch screen function
-    currentModal: null,
-    playBtn: document.getElementById('playBtn'),
+    currentModal: null, //track displayed modal
+    playBtn: document.getElementById('playBtn'), 
     inputName: document.getElementById('inputName'),
-    soundIsPlaying: false,
+    soundIsPlaying: false, //flag if game sound is playing
 
-    //toggle game music
+    //method to toggle game music
     toggleSound: function(){
         this.soundIsPlaying = !this.soundIsPlaying;
     },
+    //method to check if cat profile is chosen before enabling run/start button
     checkCatChosen: function() {
+        //check if cat is chosen or has .clicked
         const chosenCat = document.querySelector('.cat-profile.clicked');
         if (chosenCat) {
+            //if yes enable button 
             $('#runBtn').prop('disabled', false);
         } else {
+            //if not disable button 
             $('#runBtn').prop('disabled', true);
             btnSound.pause();
         }
     },
+    //method to display modal and pause the game if in game screen
     showModal: function(){
         if (this.currentScreen === 'game-screen'){
             this.currentModal = new bootstrap.Modal($('#infoModal'));
@@ -32,6 +37,7 @@ const gameControls = {
             this.isRunning = false;
         }
     },
+    //method to close modal and resume game if previously active
     closeModal: function(){
         this.currentModal.hide();
         this.currentModal = null;
@@ -40,9 +46,11 @@ const gameControls = {
             this.isRunning = this.wasRunning;
         }
     },
+    //method to toggle game running state (start/pause)
     toggleRunning: function(){
         this.isRunning = !this.isRunning;
     },
+    //method to switch between different game screens 
     switchScreen: function(screenName){
         this.currentScreen=screenName;
         $('.screen').each(function() {
@@ -51,6 +59,7 @@ const gameControls = {
         
         $('#' + screenName).removeClass('hide');
 
+         //hide and show buttons of each specific screens
         if (screenName === 'start-screen'){
             $('#homeBtn').addClass('hide');           
             $('#quitBtn').addClass('hide');
@@ -66,7 +75,7 @@ const gameControls = {
             $('#playBtn').removeClass('hide');  
             $('#soundBtn').removeClass('hide'); 
             $('#restartBtn').addClass('hide'); 
-            
+            //press play button functions for the game screen
             pressPlay();
             pressPause();
         } else if (screenName === 'gameover-screen'){
@@ -88,8 +97,10 @@ const gameControls = {
         }
     },
     init: function(){
+        //initialize logic for game control and event listeners
         gameControls.isRunning = false;
         this.switchScreen(this.currentScreen);
+        //event listener to toggle game sound on/off
         $('#soundBtn').on('click', () => {
             this.toggleSound();
             if (this.soundIsPlaying){
@@ -107,8 +118,9 @@ const gameControls = {
               </svg>`);
             }
         });
-
+        //event listener for playing/pausing game 
         $('#playPauseBtn').on('click', () => {
+            //toggle game running state and update button text
             this.toggleRunning();
             if(this.isRunning){
                 playBtnSound();
@@ -118,31 +130,38 @@ const gameControls = {
                 $('#playPauseBtn').html('Play');
         }});
 
+        //event listener for quitting game
         $('#quitBtn').on('click', () => {
+            //reset game and switch to start screen
             playBtnSound();
             resetGame();
             this.switchScreen('start-screen');
         });
 
+        //event listener for displaying instructions
         $('#helpBtn').on('click', () => {
             playBtnSound();
-            this.switchScreen('instruction-screen');
+            this.switchScreen('instruction-screen'); //switch to instruction screen
         });
 
+        //event listener for displaying info modals in the game screen
         $('#infoBtn').on('click', () => {
             playBtnSound();
             this.showModal()
         });
 
+        //event listener for returning to start screen
         $('#homeBtn').on('click', () => {
             playBtnSound();
             this.switchScreen('start-screen');
         });
 
+        //event listener for restarting game from start screen
         $('#restartBtn').on('click', () => {
             this.switchScreen('start-screen');
         });
 
+        //event listener for starting the game if user input is provided and reset game timer
         $('#runBtn').prop('disabled', true);
 
         $('#runBtn').on('click', () => {
@@ -152,32 +171,34 @@ const gameControls = {
                 $('#inputName').val('');
                 $('#inputName').attr('placeholder', '[enter cat name]');
                 gameControls.switchScreen('game-screen');
-                resetTimer();
+                resetTimer(); //timer reset
             }
-            pauseBackgroundSound();
         });
 
+        //event listener for trying the game again after game over
         $('#tryAgainBtn').on('click', () => {
             playStartSound();
-            this.switchScreen('game-screen');
-            resetTimer();
+            this.switchScreen('game-screen'); // goes back to game screen 
+            resetTimer(); //reset timer
         })
 
-        $('#calico').on('click', () => {
+        //event listeners for selecting different cat profiles
+        $('#calico').on('click', () => { //calico cat profile
             catImg.src = './images/calico-profile.png';
             $('#cat-img').attr('src', './images/calico-cat.png');
         });
     
-        $('#brown').on('click', () => {
+        $('#brown').on('click', () => { //brown cat profile
             catImg.src = './images/brown-profile.png';
             $('#cat-img').attr('src', './images/brown-cat.png');
         });
     
-        $('#cream').on('click', () => {
+        $('#cream').on('click', () => { //cream cat profile
             catImg.src = './images/cream-profile.png';
             $('#cat-img').attr('src', './images/cream-cat.png');
         });
 
+        //updating cat name and enabling run/start button
         $('#inputName').on('input', function() {
             const enteredName = $(this).val().trim();
             $('#cat-name').text(enteredName);
@@ -190,7 +211,7 @@ const gameControls = {
     }
 }
 
-//body of cat when eating fish
+//body of cat x and y coordinates
 class CatPart{
     constructor(x, y){
         this.x = x;
@@ -201,57 +222,76 @@ class CatPart{
 //running cat canvas for profile
 class CatAnimation {
     constructor() {
-        this.catCanvas = document.getElementById('cat-canvas');
-        this.catCtx = this.catCanvas.getContext('2d');
+        //canvas and context for drawing
+        this.catCanvas = document.getElementById('cat-canvas'); //canvas element
+        this.catCtx = this.catCanvas.getContext('2d'); //canvas context
+        //canvas width and height
         this.catCanvas.width = 300;
         this.catCanvas.height = 300;
 
+        //create new Cat object to animate within canvas
         this.cat = new Cat(this.catCanvas.width, this.catCanvas.height);
-
+        //variable sotring animation frame references
         this.animationFrame = null;
     }
 
+    //method to keep animating cat
     animate = () => {
+        //check if game is running
         if (gameControls.isRunning){
+            //clear canvas before drawing the next frame
             this.catCtx.clearRect(0, 0, this.catCanvas.width, this.catCanvas.height);
+            //draw cat on canvas and update animation
             this.cat.draw(this.catCtx);
             this.cat.update();
+            //request for next animation frame
             this.animationFrame = requestAnimationFrame(this.animate);
         }
     };
 
+    //method to start animation if it's not already running
     startAnimation = () => {
         if (!this.animationFrame) {
-            this.animate();
+            this.animate(); //animation lop
         }
     };
 
+    //method to stop animation
     stopAnimation = () => {
+        //cancel annimation frame
         cancelAnimationFrame(this.animationFrame);
+        //reset references
         this.animationFrame = null;
     };
 }
 
-//CAT player in Cat Canvas
+//CAT player in Cat Canvas animation
 class Cat {
+    //initialize cat object
     constructor(canvasWidth, canvasHeight, frameRate=3){
-        this.canvasWidth = canvasWidth;
-        this.canvasHeight = canvasHeight;
-        this.image = document.getElementById('cat-img');
-        this.spriteWidth = 31.4;
-        this.spriteHeight = 26;
-        this.width = this.spriteWidth;
-        this.height = this.spriteHeight;
-        this.scale = 5;
+        //properties related to canvas and image
+        this.canvasWidth = canvasWidth; //canvas width 
+        this.canvasHeight = canvasHeight; //canvas height
+        this.image = document.getElementById('cat-img'); //cat image used
+        this.spriteWidth = 31.4; //width of sprite frame
+        this.spriteHeight = 26; //height of sprite frame
+
+        //cat size and position properties
+        this.width = this.spriteWidth; //cat width
+        this.height = this.spriteHeight; //cat height
+        this.scale = 5; //scale cat
+        //x and y postiion of cat
         this.x = this.canvasWidth / 2 - this.width * this.scale / 2;
         this.y = this.canvasHeight / 2 - this.height * this.scale/ 2;
+
+        //animation properties
         this.minFrame = 0;
-        this.maxFrame = 8;
-        this.frame = 0;
-        this.frameX = 0;
-        this.frameY = 0;
-        this.frameRate = frameRate; 
-        this.frameCount = 0;
+        this.maxFrame = 8; //max frame
+        this.frame = 0;//current frame
+        this.frameX = 0; //x position of current frame in sprite sheet
+        this.frameY = 0; //y position of current frame in sprite sheet
+        this.frameRate = frameRate; //using frame rate that we want
+        this.frameCount = 0; //frame track counter
         this.framesPerUpdate = Math.round(60 / this.frameRate); // Calculate frames per update based on frame rate
     }
 
@@ -272,9 +312,8 @@ class Cat {
 //GAME VARIABLES
 const canvas = document.getElementById('game-board');
 const ctx = canvas.getContext('2d');
-
+//initial cat player speed
 let speed = 4;
-
 let tileCount = 25;
 let tileSize = canvas.width/tileCount;
 
@@ -286,7 +325,7 @@ let headY = 10;
 const catParts = [];
 let tailLength = 0;
 
-//Fish X/Y coordinates
+//initial fish X/Y coordinates
 let fishGoodX = 5;
 let fishGoodY = 5
 
@@ -303,16 +342,18 @@ let score = 0;
 let randomScore = Math.floor(Math.random() * 6) + 1;
 let gameInterval;
 
-//speed conditions
+//speed conditions according to player score
 function updateSpeed() {
     if (score > 3 && score <= 6) {
         speed = 5; 
     } else if (score > 6 && score <= 9) {
         speed = 6; 
     } else if (score > 9 && score < 12) {
-        speed = 7; 
-    } else if (score == 12) {
-        speed = 7; 
+        speed = 7;
+    } else if (score > 12 && score < 15){
+        speed = 8;
+    } else if (score == 15) {
+        speed = 8; 
     }
 }
 //score in gameover
@@ -382,6 +423,7 @@ function clearScreen(){
 }
 
 //CAT AND CANVAS CHARACTERS
+//image sources for cat and fish types
 const catImg = new Image();
 catImg.src = '../images/brown-profile.png'
 
@@ -394,6 +436,8 @@ magicalFishImg.src = '../images/magical-fish.png';
 const badFishImg = new Image();
 badFishImg.src = '../images/bad-fish.png';
 
+
+//create each part of cat on game board
 function drawCat(){
     for (let i = 0; i < catParts.length; i++){
         let part = catParts[i];
@@ -402,12 +446,15 @@ function drawCat(){
         ctx.fillStyle = "yellowgreen";
         ctx.fillRect(centerX - tileSize, centerY - tileSize, tileSize * .5, tileSize * .5);
     };
-        
+    
+    //Add new part at the head position
     catParts.push(new CatPart(headX, headY));
+    //remove cat parts to match tailLength check
     while (catParts.length > tailLength){
         catParts.shift();
     }
     
+    //draw cat head
     ctx.drawImage(
         catImg,
         headX * tileSize,
@@ -417,6 +464,7 @@ function drawCat(){
     )
 }
 
+//change cat position
 function changeCatPosition(){
     if (gameControls.isRunning){
         headX = headX + xVelocity;
@@ -439,7 +487,7 @@ function isFishOverlap(fishX, fishY) {
     return false; // Fish doesn't overlap with cat or body parts
 }
 
-//Good Fish
+//create good fish
 function drawGoodFish(){
     ctx.drawImage(
         goodFishImg,
@@ -450,11 +498,13 @@ function drawGoodFish(){
     )
 }
 
-// random coordinates to generate good fish
+//place good fish on game board
 function placeGoodFish(){
     do {
-        fishGoodX = Math.floor(Math.random() * tileCount);
-        fishGoodY = Math.floor(Math.random() * tileCount);
+        //random coordinates for good fish
+        let goodCoord =Math.floor(Math.random() * tileCount);
+        fishGoodX =goodCoord;
+        fishGoodY = goodCoord;
     } while (isFishOverlap(fishGoodX, fishGoodY));
 }
 
@@ -462,9 +512,9 @@ function placeGoodFish(){
 function checkGoodFishCollion() {
     if (fishGoodX === headX && fishGoodY === headY) {
         playEatSound();
-        // handleFishCollision(FishType.GOOD);
-        fishGoodX = Math.floor(Math.random() * tileCount);
-        fishGoodY = Math.floor(Math.random() * tileCount);
+        // handleFishCollision
+        // fishGoodX = Math.floor(Math.random() * tileCount);
+        // fishGoodY = Math.floor(Math.random() * tileCount);
         //handle tail length and score
         score ++;
         tailLength++;
@@ -472,7 +522,7 @@ function checkGoodFishCollion() {
     }
   }
 
-//Magical Fish
+//create magical fish
 function drawMagicalFish(){
     ctx.drawImage(
         magicalFishImg,
@@ -486,8 +536,12 @@ function drawMagicalFish(){
 //random coordinates to generate magical fish
 function placeMagicalFish(){
     do {
-        fishMagicalX = Math.floor(Math.random() * tileCount);
-        fishMagicalY = Math.floor(Math.random() * tileCount);
+        //random coordinates for magical fish
+        let magicalCoord = Math.floor(Math.random() * tileCount)
+        fishMagicalX = magicalCoord;
+        fishMagicalY = magicalCoord;
+        // fishMagicalX = Math.floor(Math.random() * tileCount);
+        // fishMagicalY = Math.floor(Math.random() * tileCount);
     } while (isFishOverlap(fishMagicalX, fishMagicalY));
 }
 
@@ -502,7 +556,7 @@ function checkMagicalFishCollision() {
     }
   }
 
-// Bad Fish
+//create bad fish
 function drawBadFish(){
     ctx.drawImage(
         badFishImg,
@@ -516,8 +570,12 @@ function drawBadFish(){
 // random coordinates to generate bad fish
 function placeBadFish(){
     do {
-        fishBadX = Math.floor(Math.random() * tileCount);
-        fishBadY = Math.floor(Math.random() * tileCount);
+        //random coordinates for bad fish
+        let badCoord = Math.floor(Math.random() * tileCount)
+        fishBadX = badCoord;
+        fishBadY = badCoord;
+        // fishBadX = Math.floor(Math.random() * tileCount);
+        // fishBadY = Math.floor(Math.random() * tileCount);
     } while (isFishOverlap(fishBadX, fishBadY));
 }
 
@@ -532,9 +590,6 @@ function checkBadFishCollision() {
     }
 
   }
-
-//   TRAIL 
-
 
 function resetGame() {
     // Reset game variables
@@ -566,6 +621,7 @@ function resetGame() {
     $('#instruction-screen').addClass('hide');
     $('#game-screen').removeClass('hide');
 
+    //redraw game
     drawGame();
 }
 
@@ -612,11 +668,12 @@ function playBackgroundSound() {
     });
 }
 
+//set background music to pause
 function pauseBackgroundSound(){
     backgroundSound.pause();
 }
 
-//buttons audio 
+//buttons audio function
 function playBtnSound(){
     const btnSound = new Audio('../audio/game-buttons.mp3');
     console.log('Trying to play button sound...');
@@ -631,7 +688,7 @@ function playBtnSound(){
 }
 
 
-//start audio
+//start audio function
 function playStartSound(){
     const startSound = new Audio('../audio/game-decide.mp3');
     if(!startSound.paused){
@@ -645,7 +702,7 @@ function playStartSound(){
 }
 
 
-//eat audio
+//eat audio function
 function playEatSound(){
     const eatSound = new Audio('../audio/game-eat.mp3');
     eatSound.play().then(() => {
@@ -655,7 +712,7 @@ function playEatSound(){
     });
 }
 
-//eat bad fish audio
+//eat bad fish audio function
 function playBFSound(){
     const badFishSound = new Audio('../audio/game-badfish.mp3');
     if(!badFishSound.paused){
@@ -668,24 +725,24 @@ function playBFSound(){
     });
 }
 
-
+//gameover sound function
 const goSound = new Audio('../audio/game-end.mp3');
 function playGoSound(){
     goSound.play();
 }
 
-// date bar
+// date bar on the left top side of screen
 const currentDate= new Date();
-const timeDate = document.getElementById('time-date');
-const dateDate = document.getElementById('date-date');
-timeDate.innerHTML = `${currentDate.getHours()}:${currentDate.getMinutes()}:${currentDate.getSeconds()}`
-dateDate.innerHTML = `${currentDate.getFullYear()} ${currentDate.getMonth() + 1} ${currentDate.getDate()}`;
+$('#time-date').text(`${currentDate.getHours()}:${currentDate.getMinutes()}:${currentDate.getSeconds()}`);
+$('#date-date').text(`${currentDate.getFullYear()} ${currentDate.getMonth() + 1} ${currentDate.getDate()}`);
 
+//timer variables
 let timerInterval;
 let seconds = 0;
 let minutes = 0;
 let finalTime = '';
 
+//start game timer function and updates timer in game board
 function startTimer() {
     timerInterval = setInterval(() => {
         seconds++;
@@ -697,13 +754,14 @@ function startTimer() {
     }, 1000);
 }
 
+//stop game timer function
 function stopTimer() {
     clearInterval(timerInterval);
     finalTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     updateGameoverScreen();
 }
 
-//update timer in game screem
+//update timer in game screen
 function updateTimerDisplay() {
     $('#timer').html(`${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`);
 }
@@ -783,7 +841,7 @@ function pressPlay(){
     gameControls.isRunning = true;
 
     //changes button text to Pause
-    $(playBtn).text("Pause");
+    $(playBtn).text("⏸ Pause");
     // remove and add styling of play pause button 
     $(playBtn).removeClass("play").addClass("pause");
     // remove and add styling of cat animation profile to red for play
@@ -812,7 +870,7 @@ function pressPlay(){
 function pressPause(){
     //toggles the state of game when clicked
     gameControls.isRunning = false;
-    $(playBtn).text("Play");
+    $(playBtn).text("▶ Play");
     // remove and add styling of play pause button 
     $(playBtn).removeClass("pause").addClass("play");
     // remove and add styling of cat animation profile to red for pause
