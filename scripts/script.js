@@ -175,14 +175,14 @@ const gameControls = {
         $('#runBtn').prop('disabled', true);
 
         $('#runBtn').on('click', () => {
-            playStartSound();
             const userInput = $('#inputName').val().trim();
             if (userInput !== ''){
                 $('#inputName').val('');
-                $('#inputName').attr('placeholder', '[enter cat name]');
+                $('#inputName').attr('placeholder', '[enter cat name]'); //reset placeholder
                 gameControls.switchScreen('game-screen');
                 resetTimer(); //timer reset
                 speed = 4; // speed reset
+                playStartSound();
             }
         });
 
