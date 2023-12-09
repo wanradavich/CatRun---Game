@@ -27,6 +27,9 @@ body{
 }
 
 /* modals */
+.asterisk {
+    color: rgb(246, 88, 10);
+}
 #infoModal{
     color: black;
     width: 400px;
@@ -169,7 +172,7 @@ body{
 }
 
 /* instruction screen */
-.good-bold, .mag-bold, .bad-bold{
+.reg-bold{
     color: aqua;
 }
 

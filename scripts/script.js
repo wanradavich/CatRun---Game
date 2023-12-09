@@ -25,7 +25,8 @@ const gameControls = {
         } else {
             //if not disable button 
             $('#runBtn').prop('disabled', true);
-            btnSound.pause();
+            playStartSound.pause();
+            playBtnSound.pause();
         }
     },
     //method to display modal and pause the game if in game screen
@@ -181,6 +182,7 @@ const gameControls = {
                 $('#inputName').attr('placeholder', '[enter cat name]');
                 gameControls.switchScreen('game-screen');
                 resetTimer(); //timer reset
+                speed = 4; // speed reset
             }
         });
 
@@ -189,6 +191,7 @@ const gameControls = {
             playStartSound();
             this.switchScreen('game-screen'); // goes back to game screen 
             resetTimer(); //reset timer
+            speed = 4; //reset speed
         })
 
         //event listeners for selecting different cat profiles
