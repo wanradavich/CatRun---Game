@@ -1,15 +1,17 @@
 "use strict";
 
+//game controls object literal 
 const gameControls = {
     title: "Cat Run",
     isRunning: false,
     wasRunning: false, 
-    currentScreen: 'start-screen',
+    currentScreen: 'start-screen', //used with the switch screen function
     currentModal: null,
     playBtn: document.getElementById('playBtn'),
     inputName: document.getElementById('inputName'),
     soundIsPlaying: false,
 
+    //toggle game music
     toggleSound: function(){
         this.soundIsPlaying = !this.soundIsPlaying;
     },
@@ -701,12 +703,12 @@ function stopTimer() {
     updateGameoverScreen();
 }
 
+//update timer in game screem
 function updateTimerDisplay() {
-    const timerDisplay = document.getElementById('timer');
-    timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-    scoreTimerDisplay = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    $('#timer').html(`${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`);
 }
 
+//reset game timer
 function resetTimer() {
     clearInterval(timerInterval);
     minutes = 0;
@@ -724,12 +726,16 @@ function updateGameoverScreen() {
 document.addEventListener('DOMContentLoaded', function() {
     const catProfiles = document.querySelectorAll('.cat-profile');
 
+    //Loop through each cat profile
     catProfiles.forEach(cat => {
+        //event listener for mouse enter on each cat profile
         cat.addEventListener('mouseenter', function(){
-            playBtnSound();
+            playBtnSound(); //trigger button sound function
         });
+        //add event listener for click on each cat profile 
         cat.addEventListener('click', function() {
-            catProfiles.forEach(cat => {
+            catProfiles.forEach(cat => { 
+                 // If the current cat profile is not the one clicked, remove the 'clicked' class
                 if (cat !== this){
                     cat.classList.remove('clicked');
                 }
@@ -764,7 +770,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 document.body.addEventListener('keydown', keyDirection); 
 const newCatAnimation = new CatAnimation();
-const border = document.getElementById("cat-canvas");
+// const border = document.getElementById("cat-canvas");
+
 //fish intervals to be set in pressPlay
 let goodInterval;
 let badInterval;
@@ -772,17 +779,22 @@ let magicalInterval;
 
 
 function pressPlay(){
+    //toggles state of game when clicked
     gameControls.isRunning = true;
-    playBtn.innerHTML = "Pause";
-    playBtn.classList.remove("play");
-    playBtn.classList.add("pause");
-    border.classList.remove("c-pause");
-    border.classList.add("c-play");
+
+    //changes button text to Pause
+    $(playBtn).text("Pause");
+    // remove and add styling of play pause button 
+    $(playBtn).removeClass("play").addClass("pause");
+    // remove and add styling of cat animation profile to red for play
+    $('#cat-canvas').removeClass("c-pause").addClass("c-play");
+    //profile cat animation runs when play is clicked
     newCatAnimation.startAnimation();
     if (!gameInterval){
         drawGame(); 
     }
 
+    //start intervals for placing different fish types if not already started
     if (!goodInterval) {
         goodInterval = setInterval(placeGoodFish, 9000);
     }
@@ -793,16 +805,18 @@ function pressPlay(){
     if (!magicalInterval) {
         magicalInterval = setInterval(placeMagicalFish, 3000);
     }
+    //start game timer
     startTimer();
 }
 
 function pressPause(){
+    //toggles the state of game when clicked
     gameControls.isRunning = false;
-    playBtn.innerHTML = "Play";
-    playBtn.classList.remove("pause");
-    playBtn.classList.add("play"); 
-    border.classList.remove("c-play");
-    border.classList.add("c-pause");
+    $(playBtn).text("Play");
+    // remove and add styling of play pause button 
+    $(playBtn).removeClass("pause").addClass("play");
+    // remove and add styling of cat animation profile to red for pause
+    $('#cat-canvas').removeClass("c-play").addClass("c-pause");
     newCatAnimation.stopAnimation();
     clearInterval(badInterval);
     clearInterval(magicalInterval);
@@ -826,12 +840,15 @@ gameControls.playBtn.addEventListener('click', function(){
 
 //MAIN GAME LOOP
 function drawGame(){ 
+    //check if game is running
     if (gameControls.isRunning){
+        //set timeout for game loop based on speed
         gameInterval = setTimeout(drawGame, 1000 / speed);
-        changeCatPosition();
+        changeCatPosition(); 
     
     let result = isGameOver();
     if(result){
+        //display, reset, and switch to game over screen 
         displayScore()
         resetGame();
         stopTimer();
@@ -840,12 +857,18 @@ function drawGame(){
     }
     clearScreen(); 
     currentScore();
+
+    //draw different types of fish
     drawGoodFish();
     drawMagicalFish();
     drawBadFish();
+
+    //collision check for fish types
     checkGoodFishCollion();
     checkMagicalFishCollision();
     checkBadFishCollision();
+
+    //draw cat and update game speed
     drawCat(); 
     updateSpeed();
     }
