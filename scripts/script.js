@@ -41,9 +41,9 @@ const gameControls = {
     closeModal: function(){
         this.currentModal.hide();
         this.currentModal = null;
-
         if (this.currentScreen === 'game-screen'){
-            this.isRunning = this.wasRunning;
+            this.isRunning = this.isRunning;
+           
         }
     },
     //method to toggle game running state (start/pause)
@@ -147,8 +147,17 @@ const gameControls = {
         //event listener for displaying info modals in the game screen
         $('#infoBtn').on('click', () => {
             playBtnSound();
+            pressPause();
             this.showModal()
+            
         });
+
+        $('#modalCloseBtn').on('click', () => {
+            playBtnSound();
+            pressPlay();
+            this.closeModal();
+
+        })
 
         //event listener for returning to start screen
         $('#homeBtn').on('click', () => {
