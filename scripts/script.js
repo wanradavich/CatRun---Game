@@ -378,6 +378,8 @@ function currentScore() {
     $('#score').html(score);
 }
 
+let message;
+
 function isGameOver(){
     let gameOver = false;
     //wall collision check
@@ -386,16 +388,21 @@ function isGameOver(){
     }
     if (headX < 0){ 
         gameOver = true;
+        message = "Death by wall collision";
     }
     if (headX === tileCount){ 
         gameOver = true;
+        message = "Death by wall collision";
     }
     if (headY < 0){ 
         gameOver = true;
+        message = "Death by wall collision";
     }
     if (headY === tileCount){ 
         gameOver = true;
+        message = "Death by wall collision";
     }
+    
 
     // Check collision with body parts
     for (let i = 1; i < catParts.length; i++){
@@ -404,6 +411,7 @@ function isGameOver(){
             gameOver = true;
             break;
         }
+        message = "Death by body collision"
     }
 
     // Check collision with fish
@@ -414,6 +422,7 @@ function isGameOver(){
                 (part.x === fishMagicalX && part.y === fishMagicalY) ||
                 (part.x === fishGoodX && part.y === fishGoodY)){
                 gameOver = true;
+                message = "Death by fish-body collision"
                 break;
             }
         }
@@ -421,10 +430,12 @@ function isGameOver(){
    
     //score below 0 check for gameover
     if (score < 0){
-        gameOver = true;
+        message = "Death by negative score";
+        gameOver = true;  
     }
-
+    $('#death-msg').html(message);
     return gameOver;
+    
 }
 
 //clears over anything from screen 
