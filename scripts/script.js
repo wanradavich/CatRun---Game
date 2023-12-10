@@ -2,7 +2,6 @@
 
 //game controls object literal 
 const gameControls = {
-    title: "Cat Run", 
     isRunning: false, //flag if game is running
     wasRunning: false, //flag to store previous game state
     currentScreen: 'start-screen', //used with the switch screen function
@@ -524,9 +523,6 @@ function placeGoodFish(){
 function checkGoodFishCollion() {
     if (fishGoodX === headX && fishGoodY === headY) {
         playEatSound();
-        // handleFishCollision
-        // fishGoodX = Math.floor(Math.random() * tileCount);
-        // fishGoodY = Math.floor(Math.random() * tileCount);
         //handle tail length and score
         score ++;
         tailLength++;
@@ -594,16 +590,23 @@ function placeBadFish(){
 // bad fish collision check
 function checkBadFishCollision() {
     if (fishBadX === headX && fishBadY === headY) {
-        playBFSound()
-        //handle tail length and score
+        playBFSound();
+        // Decrement score
         score -= 20;
-        tailLength += randomScore;
+
+        // Adjust tail length based on the score
+        if (score >= 0) {
+            tailLength++;
+        } else {
+            // If score goes negative, set tail length to zero to avoid negative lengths
+            tailLength = 0;
+            return gameOver;
+        }
+
         placeBadFish();
-    if (score < 0){
-        return gameOver;
     }
-    }
-  }
+}
+
 
 function resetGame() {
     // Reset game variables
