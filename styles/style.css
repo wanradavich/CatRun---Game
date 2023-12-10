@@ -443,4 +443,8 @@ margin-bottom: 32px;
     margin-bottom: 190px;
 }
 
+#death-msg{
+    color: rgb(77, 171, 222);
+    text-shadow: 1px 2px 2px purple;
+}
 
